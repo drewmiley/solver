@@ -13,9 +13,12 @@ class Countdown(picked: List[Int], target: Int) {
     def isSolvable(): Boolean = {
         var savedValues: List[List[Int]] = List(picked)
         var currentResult = savedValues
-        var calculatedValues = performPairwiseCalculations(currentResult)
-        savedValues = savedValues ++ calculatedValues
-        currentResult = calculatedValues
+        var calculatedValues = List(List(0))
+//        while (currentResult.exists(d => d.size > 1)) {
+            calculatedValues = performPairwiseCalculations(currentResult)
+            currentResult = calculatedValues
+            savedValues = savedValues ++ calculatedValues
+//        }
         savedValues.exists(d => d.contains(target))
     }
 }
