@@ -16,4 +16,8 @@ object Main extends App {
     val targetNumber = answerPicker.select(1).head
 
     println(targetNumber)
+
+    val countdown = new Countdown(pickedNumbers, targetNumber)
+
+    println(countdown.isSolvable())
 }
