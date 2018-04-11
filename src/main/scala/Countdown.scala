@@ -16,6 +16,6 @@ class Countdown(picked: List[Int], target: Int) {
         var calculatedValues = performPairwiseCalculations(currentResult)
         savedValues = savedValues ++ calculatedValues
         currentResult = calculatedValues
-        savedValues.filter(d => d.contains(target)).length > 0
+        savedValues.exists(d => d.contains(target))
     }
 }
