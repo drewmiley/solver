@@ -1,9 +1,13 @@
 package main.scala
 
 object Main extends App {
+    val largeNumbers = 1
+    val smallNumbers = 6 - largeNumbers
     println("Solved")
     println("Large")
-    println("{ 25 , 50 , 75 , 100 }")
+    val largePicker = new NumberPicker((1 to 4).map(d => 25 * d).toList)
+    println(largePicker.select(largeNumbers))
     println("Small")
-    println("{ 1 , 1 , 2 , 2 , 3 , 3 , 4 , 4 , 5 , 5 , 6 , 6 , 7 , 7 , 8 , 8 , 9 , 9 , 10 , 10 }")
+    val smallPicker = new NumberPicker((1 to 10).toList ++ (1 to 10).toList)
+    println(smallPicker.select(smallNumbers))
 }
