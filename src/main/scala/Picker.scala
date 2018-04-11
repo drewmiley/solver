@@ -5,6 +5,6 @@ import scala.util.Random
 class NumberPicker(values: List[Int]) {
 
     def select(selections: Int): List[Int] = {
-        values
+        Random.shuffle(values) take selections
     }
 }
