@@ -9,7 +9,7 @@ object Main extends App {
 
     val answerPicker = new NumberPicker((101 to 999).toList)
 
-    val pickedNumbers = largePicker.select(largeNumbers) ++ smallPicker.select(smallNumbers)
+    val pickedNumbers = smallPicker.select(smallNumbers).sorted ++ largePicker.select(largeNumbers)
 
     println(pickedNumbers)
 
