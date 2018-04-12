@@ -7,18 +7,18 @@ class Countdown(picked: List[Int], target: Int) {
     }
 
     def performPairwiseCalculations(listOfNumberLists: List[List[Int]]): List[List[Int]] = {
-        listOfNumberLists
+        listOfNumberLists.map(d => d diff List(d.head))
     }
 
     def isSolvable(): Boolean = {
         var savedValues: List[List[Int]] = List(picked)
         var currentResult = savedValues
         var calculatedValues = List(List(0))
-//        while (currentResult.exists(d => d.size > 1)) {
+        while (currentResult.exists(d => d.size > 1)) {
             calculatedValues = performPairwiseCalculations(currentResult)
             currentResult = calculatedValues
             savedValues = savedValues ++ calculatedValues
-//        }
+        }
         savedValues.exists(d => d.contains(target))
     }
 }
