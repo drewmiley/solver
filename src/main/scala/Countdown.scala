@@ -3,6 +3,8 @@ package main.scala
 class Countdown(picked: List[Int], target: Int) {
 
     private def pairwiseCalculationSet(ints: (Int, Int)): Set[Int] = {
+        // TODO: Rewrite as two int parameters.
+        // TODO: diff set rather than filter out parameters
         Set(ints._1 + ints._2, ints._2 - ints._1, ints._1 * ints._2, ints._2 / ints._1)
             .filter(d => d > 0 && d % 1 == 0 && d != ints._1 && d != ints._2)
     }
@@ -29,17 +31,25 @@ class Countdown(picked: List[Int], target: Int) {
         })
     }
 
+    private def recurse(state: List[List[List[Int]]]): List[List[List[Int]]] = {
+        // TODO: Rewrite using simple class
+        var savedValues = state(0)
+        var currentResult = state(1)
+        var calculatedValues = state(2)
+        calculatedValues = performPairwiseCalculations(currentResult)
+        currentResult = calculatedValues.filter(d => !d.contains(target))
+        savedValues = savedValues ++ calculatedValues.filter(d => d.contains(target))
+        List(savedValues, currentResult, calculatedValues)
+    }
+
     def isSolvable(): Boolean = {
-        var savedValues: List[List[Int]] = List()
-        var currentResult = List(picked)
-        var calculatedValues = List(List(0))
-        // TODO: Rewrite as recursion
-        while (currentResult.exists(d => d.size > 1)) {
-            calculatedValues = performPairwiseCalculations(currentResult)
-            currentResult = calculatedValues.filter(d => !d.contains(target))
-            savedValues = savedValues ++ calculatedValues.filter(d => d.contains(target))
+        // TODO: Rewrite as simple class
+        var state: List[List[List[Int]]] = List(List(), List(picked), List())
+        // TODO: Rewrite as sleek recursion
+        while (state(1).exists(d => d.size > 1)) {
+            state = recurse(state)
         }
-        println(savedValues)
-        savedValues.size > 0
+        println(state(0))
+        state(0).size > 0
     }
 }
