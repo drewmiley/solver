@@ -11,9 +11,13 @@ class Countdown(picked: List[Int], target: Int) {
         ((fullList diff List(fullList(firstIndex), fullList(secondIndex))) :+ newValue).sorted
     }
 
+    private def generateIndexPairs(listSize: Int): List[(Int, Int)] = {
+        (0 until listSize).flatMap(i => (i + 1 until listSize).map(j => (i, j))).toList
+    }
+
     private def performPairwiseCalculations(listOfNumberLists: List[List[Int]]): List[List[Int]] = {
         listOfNumberLists.flatMap(numberList => {
-            // TODO: (0, 1) to (4, 5) generation and flatMap
+            // TODO: Replace with generateIndexPairs iteration
             numberList.zipWithIndex
                 .flatMap(d => {
                     (d._2 + 1 until numberList.size)
