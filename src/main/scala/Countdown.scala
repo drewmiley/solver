@@ -4,16 +4,16 @@ class Countdown(picked: List[Int], target: Int) {
 
     private def pairwiseCalculationSet(ints: (Int, Int)): Set[Int] = {
         Set(ints._1 + ints._2, ints._2 - ints._1, ints._1 * ints._2, ints._2 / ints._1)
-            .filter(d => d > 0 && d % 1 == 0)
+            .filter(d => d > 0 && d % 1 == 0 && d != ints._1 && d != ints._2)
     }
 
     private def getNewList(fullList: List[Int], firstIndex: Int, secondIndex: Int, newValue: Int): List[Int] = {
-        val mem = fullList diff List(fullList(firstIndex), fullList(secondIndex))
-        (mem :+ newValue).sorted
+        ((fullList diff List(fullList(firstIndex), fullList(secondIndex))) :+ newValue).sorted
     }
 
     private def performPairwiseCalculations(listOfNumberLists: List[List[Int]]): List[List[Int]] = {
         listOfNumberLists.flatMap(numberList => {
+            // TODO: (0, 1) to (4, 5) generation and flatMap
             numberList.zipWithIndex
                 .flatMap(d => {
                     (d._2 + 1 until numberList.size)
@@ -29,6 +29,7 @@ class Countdown(picked: List[Int], target: Int) {
         var savedValues: List[List[Int]] = List()
         var currentResult = List(picked)
         var calculatedValues = List(List(0))
+        // TODO: Rewrite as recursion
         while (currentResult.exists(d => d.size > 1)) {
             calculatedValues = performPairwiseCalculations(currentResult)
             currentResult = calculatedValues.filter(d => !d.contains(target))
