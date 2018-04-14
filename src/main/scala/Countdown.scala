@@ -33,6 +33,7 @@ class Countdown(picked: List[Int], target: Int) {
 
     private def recurse(state: List[List[List[Int]]]): List[List[List[Int]]] = {
         // TODO: Rewrite using simple class
+        // TODO: Rename saved values to solutions
         var savedValues = state(0)
         var currentResult = state(1)
         var calculatedValues = state(2)
