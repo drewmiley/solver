@@ -43,12 +43,22 @@ class Countdown(picked: List[Int], target: Int) {
         new State(calculatedValues, currentResult, solutions)
     }
 
-    def isSolvable(): Boolean = {
-        var state = new State(List(), List(picked), List())
-        // TODO: Rewrite as sleek recursion
+    private def runSolver(initialState: State): State = {
+        var state = initialState
+//        def iterate(state: State): State = state.currentResult.exists(d => d.size > 1) match {
+//            case false => state
+//            case true => recurse(state)
+//        }
         while (state.currentResult.exists(d => d.size > 1)) {
             state = recurse(state)
         }
+        state
+//        iterate(state)
+    }
+
+    def isSolvable(): Boolean = {
+        var initialState = new State(List(), List(picked), List())
+        val state = runSolver(initialState)
         println(state.solutions)
         state.solutions.size > 0
     }
