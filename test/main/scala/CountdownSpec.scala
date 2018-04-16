@@ -62,7 +62,19 @@ class CountdownSpec extends FlatSpec with BeforeAndAfterEach {
     assert(countdown.operateOnIntegerPairAndCreateNewLists(List(1, 1), (0, 1)) == List(List(2)))
   }
 
+  "operateOnIntegerPairAndCreateNewLists" should "be a List of at most size 4" in {
+  }
+
+  "operateOnIntegerPairAndCreateNewLists" should "be a List of lists with size 1 less than the param list" in {
+  }
+
   "performOneOperationOnCurrentLists" should "be a List(List(2)) for param List(List(1, 1))" in {
     assert(countdown.performOneOperationOnCurrentLists(List(List(1, 1))) == List(List(2)))
+  }
+
+  "performOneOperationOnCurrentLists" should "bbe a List of at most 4 times the size of the param lists" in {
+  }
+
+  "performOneOperationOnCurrentLists" should "be a List of lists with size 1 less than the param lists" in {
   }
 }
