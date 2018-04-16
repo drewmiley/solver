@@ -22,7 +22,7 @@ class Countdown(picked: List[Int], target: Int) {
         integerPairOperationValues.toList.map(value => (listWithIndexPairRemoved :+ value).sorted)
     }
 
-    def performPairwiseCalculations(listOfNumberLists: List[List[Int]]): List[List[Int]] = {
+    def performOneOperationOnCurrentLists(listOfNumberLists: List[List[Int]]): List[List[Int]] = {
         listOfNumberLists.flatMap(numberList => {
             generateIndexPairs(numberList.size).flatMap(indexPair => {
                 operateOnIntegerPairAndCreateNewLists(numberList, indexPair)
@@ -33,7 +33,7 @@ class Countdown(picked: List[Int], target: Int) {
     def runSolver(picked: List[Int], target: Int): List[List[Int]] = {
         val state = new State(List(picked))
         def recurse(state: State): State = if (state.currentResult.exists(d => d.size > 1)) {
-            val calculatedValues = performPairwiseCalculations(state.currentResult)
+            val calculatedValues = performOneOperationOnCurrentLists(state.currentResult)
             recurse(new State(calculatedValues.filter(d => !d.contains(target)),
                 state.solutions ++ calculatedValues.filter(d => d.contains(target))))
         } else {
