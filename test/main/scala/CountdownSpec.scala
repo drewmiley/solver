@@ -10,6 +10,10 @@ class CountdownSpec extends FlatSpec with BeforeAndAfterEach {
     countdown = new Countdown(List(), 0)
   }
 
+  def generateSortedIntList(size: Int): List[Int] = {
+    new NumberPicker((1 to 100).toList).select(size).sorted
+  }
+
   "applyOperatorsToIntegerPair" should "be Set(2) for param 1, 1" in {
     assert(countdown.applyOperatorsToIntegerPair(1, 1) == Set(2))
   }
