@@ -79,9 +79,20 @@ class CountdownSpec extends FlatSpec with BeforeAndAfterEach {
     assert(countdown.performOneOperationOnCurrentLists(List(List(1, 1))) == List(List(2)))
   }
 
-  "performOneOperationOnCurrentLists" should "bbe a List of at most 4 times the size of the param lists" in {
+  "performOneOperationOnCurrentLists" should "be a List of at most 4 * T(size - 1) times the size of the param lists" in {
+    (2 to 6).foreach(size =>
+      (1 to 100).foreach(_ => {
+        val generatedList = (1 to 100).toList.map(_ => generateSortedIntList(size))
+        assert(countdown.performOneOperationOnCurrentLists(generatedList).size <= 4 * generatedList.size * (size * (size - 1) / 2))
+      }))
   }
 
   "performOneOperationOnCurrentLists" should "be a List of lists with size 1 less than the param lists" in {
+    (2 to 6).foreach(size =>
+      (1 to 100).foreach(_ => {
+        val generatedList = (1 to 100).toList.map(_ => generateSortedIntList(size))
+        assert(countdown.performOneOperationOnCurrentLists(generatedList)
+          .map(list => list.size).toSet == Set(size - 1))
+      }))
   }
 }
