@@ -63,9 +63,16 @@ class CountdownSpec extends FlatSpec with BeforeAndAfterEach {
   }
 
   "operateOnIntegerPairAndCreateNewLists" should "be a List of at most size 4" in {
+    (2 to 6).foreach(size =>
+      (1 to 100).foreach(_ =>
+        assert(countdown.operateOnIntegerPairAndCreateNewLists(generateSortedIntList(size), (0, 1)).size <= 4)))
   }
 
   "operateOnIntegerPairAndCreateNewLists" should "be a List of lists with size 1 less than the param list" in {
+    (2 to 6).foreach(size =>
+      (1 to 100).foreach(_ =>
+        assert(countdown.operateOnIntegerPairAndCreateNewLists(generateSortedIntList(size), (0, 1))
+          .map(list => list.size).toSet == Set(size - 1))))
   }
 
   "performOneOperationOnCurrentLists" should "be a List(List(2)) for param List(List(1, 1))" in {
