@@ -14,8 +14,8 @@ class CountdownSpec extends FlatSpec with BeforeAndAfterEach {
     new NumberPicker((1 to 100).toList).select(size).sorted
   }
 
-  "applyOperatorsToIntegerPair" should "be List(Operation(2,1 + 1)) for param 1, 1" in {
-    assert(countdown.applyOperatorsToIntegerPair(1, 1) == List(Operation(2,"1 + 1")))
+  "applyOperatorsToIntegerPair" should "be List(Operation(2,1 + 1 = 2)) for param 1, 1" in {
+    assert(countdown.applyOperatorsToIntegerPair(1, 1) == List(Operation(2,"1 + 1 = 2")))
   }
 
   "applyOperatorsToIntegerPair" should "be a set of at most size 3 for param i, i" in {
@@ -58,8 +58,8 @@ class CountdownSpec extends FlatSpec with BeforeAndAfterEach {
     (2 to 100).foreach(n => assert(countdown.generateIndexPairs(n).forall(indexPair => (0 to n + 1).contains(indexPair._1))))
   }
 
-  "operateOnIntegerPairAndCreateNewLists" should "be a List(Calculation(List(2),List(1 + 1))) for params List(1, 1), (0, 1)" in {
-    assert(countdown.operateOnIntegerPairAndCreateNewLists(Calculation(List(1, 1)), (0, 1)) == List(Calculation(List(2),List("1 + 1"))))
+  "operateOnIntegerPairAndCreateNewLists" should "be a List(Calculation(List(2),List(1 + 1 = 2))) for params List(1, 1), (0, 1)" in {
+    assert(countdown.operateOnIntegerPairAndCreateNewLists(Calculation(List(1, 1)), (0, 1)) == List(Calculation(List(2),List("1 + 1 = 2"))))
   }
 
   "operateOnIntegerPairAndCreateNewLists" should "be a List of at most size 4" in {
@@ -75,8 +75,8 @@ class CountdownSpec extends FlatSpec with BeforeAndAfterEach {
           .map(list => list.values.size).toSet == Set(size - 1))))
   }
 
-  "performOneOperationOnCurrentLists" should "be a List(Calculation(List(2),List(1 + 1))) for param List(List(1, 1))" in {
-    assert(countdown.performOneOperationOnCurrentLists(List(Calculation(List(1, 1)))) == List(Calculation(List(2),List("1 + 1"))))
+  "performOneOperationOnCurrentLists" should "be a List(Calculation(List(2),List(1 + 1 = 2))) for param List(List(1, 1))" in {
+    assert(countdown.performOneOperationOnCurrentLists(List(Calculation(List(1, 1)))) == List(Calculation(List(2),List("1 + 1 = 2"))))
   }
 
   "performOneOperationOnCurrentLists" should "be a List of at most 4 * T(size - 1) times the size of the param lists" in {

@@ -10,10 +10,10 @@ class Countdown(picked: List[Int], target: Int) {
 
     def applyOperatorsToIntegerPair(min: Int, max: Int): List[Operation] = {
         List(
-            Operation(min + max, s"$min + $max"),
-            Operation(max - min, s"$max - $min"),
-            Operation(min * max, s"$min * $max"),
-            Operation(max / min, s"$max / $min")
+            Operation(min + max, s"$min + $max = ${ min + max }"),
+            Operation(max - min, s"$max - $min = ${ max - min }"),
+            Operation(min * max, s"$min * $max = ${ min * max }"),
+            Operation(max / min, s"$max / $min = ${ max / min }")
         ).filter(operation => operation.value > 0 && operation.value % 1 == 0 &&
                 operation.value != min && operation.value != max)
     }
@@ -53,5 +53,9 @@ class Countdown(picked: List[Int], target: Int) {
         recurse(state).solutions
     }
 
-    def solutions: List[String] = runSolver(picked, target).map(solution => "Solved")
+    def solutions: List[String] = runSolver(picked, target).map(solution => {
+        println(solution.values)
+        println(solution.representation)
+        "Solved"
+    })
 }
