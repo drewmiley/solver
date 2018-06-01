@@ -2,9 +2,9 @@ package main.scala
 
 case class Calculation(values: List[Int], representation: List[String] = List())
 
-case class Operation(value: Float, representation: String = "")
+case class Operation(value: Float, representation: String)
 
-case class State(currentResult: List[Calculation] = List(), solutions: List[Calculation] = List())
+case class State(currentResult: List[Calculation], solutions: List[Calculation] = List())
 
 object Countdown {
 
@@ -23,30 +23,34 @@ object Countdown {
     }
 
     def operateOnIntegerPairAndCreateNewLists(numberList: Calculation, indexPair: (Int, Int)): List[Calculation] = {
-        val min = numberList.values(indexPair._1)
-        val max = numberList.values(indexPair._2)
-        val integerPairOperationValues = applyOperatorsToIntegerPair(min, max)
-        val listWithIndexPairRemoved = numberList.values diff List(min, max)
-        integerPairOperationValues.map(operation =>
-            Calculation((listWithIndexPairRemoved :+ operation.value.toInt).sorted,
-                numberList.representation :+ operation.representation)
+        val min: Int = numberList.values(indexPair._1)
+        val max: Int = numberList.values(indexPair._2)
+        val listWithIndexPairRemoved: List[Int] = numberList.values diff List(min, max)
+        applyOperatorsToIntegerPair(min, max).map(operation =>
+            Calculation(
+                (listWithIndexPairRemoved :+ operation.value.toInt).sorted,
+                numberList.representation :+ operation.representation
+            )
         )
     }
 
-    def performOneOperationOnCurrentLists(listOfNumberLists: List[Calculation]): List[Calculation] = {
-        listOfNumberLists.flatMap(numberList => {
-            generateIndexPairs(numberList.values.size).flatMap(indexPair => {
-                operateOnIntegerPairAndCreateNewLists(numberList, indexPair)
-            })
-        })
-    }
+    def performOneOperationOnCurrentLists(listOfNumberLists: List[Calculation]): List[Calculation] =
+        listOfNumberLists
+            .flatMap(numberList =>
+                generateIndexPairs(numberList.values.size)
+                        .flatMap(operateOnIntegerPairAndCreateNewLists(numberList, _))
+            )
 
     def solve(picked: List[Int], target: Int): State = {
-        val state = new State(List(Calculation(picked)))
-        def recurse(state: State): State = if (state.currentResult.map(_.values).exists(d => d.size > 1)) {
-            val calculatedValues = performOneOperationOnCurrentLists(state.currentResult)
-            recurse(new State(calculatedValues.filter(d => !d.values.contains(target)),
-                state.solutions ++ calculatedValues.filter(d => d.values.contains(target))))
+        val state: State = State(List(Calculation(picked)))
+        def recurse(state: State): State = if (state.currentResult.map(_.values).exists(_.size > 1)) {
+            val calculatedValues: List[Calculation] = performOneOperationOnCurrentLists(state.currentResult)
+            recurse(
+                State(
+                    calculatedValues.filter(!_.values.contains(target)),
+                    state.solutions ++ calculatedValues.filter(_.values.contains(target))
+                )
+            )
         } else {
             state
         }
