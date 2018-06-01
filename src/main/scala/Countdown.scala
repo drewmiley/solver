@@ -1,9 +1,10 @@
 package main.scala
 
-class Countdown(picked: List[Int], target: Int) {
-    private case class State(currentResult: List[List[Int]] = List(), solutions: List[List[Int]] = List())
+case class Calculation(values: List[Int], representation: String = "")
 
-    private case class Calculation(values: List[Int], representation: String)
+class Countdown(picked: List[Int], target: Int) {
+    private case class State(currentResult: List[Calculation] = List(), solutions: List[Calculation] = List())
+
 
     def applyOperatorsToIntegerPair(min: Int, max: Int): Set[Int] = {
         (Set(min + max, max - min, min * max, max / min) diff Set(min, max))
@@ -14,28 +15,28 @@ class Countdown(picked: List[Int], target: Int) {
         (0 until listSize).flatMap(i => (i + 1 until listSize).map(j => (i, j))).toList
     }
 
-    def operateOnIntegerPairAndCreateNewLists(numberList: List[Int], indexPair: (Int, Int)): List[List[Int]] = {
-        val min = numberList(indexPair._1)
-        val max = numberList(indexPair._2)
+    def operateOnIntegerPairAndCreateNewLists(numberList: Calculation, indexPair: (Int, Int)): List[Calculation] = {
+        val min = numberList.values(indexPair._1)
+        val max = numberList.values(indexPair._2)
         val integerPairOperationValues = applyOperatorsToIntegerPair(min, max)
-        val listWithIndexPairRemoved = numberList diff List(min, max)
-        integerPairOperationValues.toList.map(value => (listWithIndexPairRemoved :+ value).sorted)
+        val listWithIndexPairRemoved = numberList.values diff List(min, max)
+        integerPairOperationValues.toList.map(value => Calculation((listWithIndexPairRemoved :+ value).sorted))
     }
 
-    def performOneOperationOnCurrentLists(listOfNumberLists: List[List[Int]]): List[List[Int]] = {
+    def performOneOperationOnCurrentLists(listOfNumberLists: List[Calculation]): List[Calculation] = {
         listOfNumberLists.flatMap(numberList => {
-            generateIndexPairs(numberList.size).flatMap(indexPair => {
+            generateIndexPairs(numberList.values.size).flatMap(indexPair => {
                 operateOnIntegerPairAndCreateNewLists(numberList, indexPair)
             })
         })
     }
 
-    def runSolver(picked: List[Int], target: Int): List[List[Int]] = {
-        val state = new State(List(picked))
-        def recurse(state: State): State = if (state.currentResult.exists(d => d.size > 1)) {
+    def runSolver(picked: List[Int], target: Int): List[Calculation] = {
+        val state = new State(List(Calculation(picked)))
+        def recurse(state: State): State = if (state.currentResult.map(_.values).exists(d => d.size > 1)) {
             val calculatedValues = performOneOperationOnCurrentLists(state.currentResult)
-            recurse(new State(calculatedValues.filter(d => !d.contains(target)),
-                state.solutions ++ calculatedValues.filter(d => d.contains(target))))
+            recurse(new State(calculatedValues.filter(d => !d.values.contains(target)),
+                state.solutions ++ calculatedValues.filter(d => d.values.contains(target))))
         } else {
             state
         }
