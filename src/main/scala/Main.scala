@@ -19,5 +19,5 @@ object Main extends App {
 
     val countdown = new Countdown(pickedNumbers, targetNumber)
 
-    println(countdown.isSolvable)
+    countdown.solutions.foreach(println)
 }

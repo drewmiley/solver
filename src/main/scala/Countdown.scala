@@ -1,7 +1,6 @@
 package main.scala
 
 class Countdown(picked: List[Int], target: Int) {
-
     private class State(var currentResult: List[List[Int]] = List(),
                         var solutions: List[List[Int]] = List())
 
@@ -42,5 +41,5 @@ class Countdown(picked: List[Int], target: Int) {
         recurse(state).solutions
     }
 
-    def isSolvable: Boolean = runSolver(picked, target).nonEmpty
+    def solutions: List[String] = runSolver(picked, target).map(solution => "Solved")
 }
