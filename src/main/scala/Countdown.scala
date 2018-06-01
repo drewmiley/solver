@@ -4,8 +4,9 @@ case class Calculation(values: List[Int], representation: List[String] = List())
 
 case class Operation(value: Int, representation: String = "")
 
-class Countdown(picked: List[Int], target: Int) {
-    private case class State(currentResult: List[Calculation] = List(), solutions: List[Calculation] = List())
+case class State(currentResult: List[Calculation] = List(), solutions: List[Calculation] = List())
+
+object Countdown {
 
 
     def applyOperatorsToIntegerPair(min: Int, max: Int): List[Operation] = {
@@ -41,7 +42,7 @@ class Countdown(picked: List[Int], target: Int) {
         })
     }
 
-    def runSolver(picked: List[Int], target: Int): List[Calculation] = {
+    def solve(picked: List[Int], target: Int): State = {
         val state = new State(List(Calculation(picked)))
         def recurse(state: State): State = if (state.currentResult.map(_.values).exists(d => d.size > 1)) {
             val calculatedValues = performOneOperationOnCurrentLists(state.currentResult)
@@ -50,10 +51,10 @@ class Countdown(picked: List[Int], target: Int) {
         } else {
             state
         }
-        recurse(state).solutions
+        recurse(state)
     }
 
-    def solutions: List[String] = runSolver(picked, target).map(solution => {
+    def formPrintableSolutions(solutions: List[Calculation]): List[String] = solutions.map(solution => {
         println(solution.values)
         println(solution.representation)
         "Solved"

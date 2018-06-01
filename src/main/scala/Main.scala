@@ -17,7 +17,6 @@ object Main extends App {
 
     println(targetNumber)
 
-    val countdown = new Countdown(pickedNumbers, targetNumber)
-
-    countdown.solutions.foreach(println)
+    val solutions = Countdown.solve(pickedNumbers, targetNumber).solutions
+    Countdown.formPrintableSolutions(solutions).foreach(println)
 }
