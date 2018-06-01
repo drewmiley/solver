@@ -1,14 +1,21 @@
 package main.scala
 
-case class Calculation(values: List[Int], representation: String = "")
+case class Calculation(values: List[Int], representation: List[String] = List())
+
+case class Operation(value: Int, representation: String = "")
 
 class Countdown(picked: List[Int], target: Int) {
     private case class State(currentResult: List[Calculation] = List(), solutions: List[Calculation] = List())
 
 
-    def applyOperatorsToIntegerPair(min: Int, max: Int): Set[Int] = {
-        (Set(min + max, max - min, min * max, max / min) diff Set(min, max))
-            .filter(d => d > 0 && d % 1 == 0)
+    def applyOperatorsToIntegerPair(min: Int, max: Int): List[Operation] = {
+        List(
+            Operation(min + max, s"$min + $max"),
+            Operation(max - min, s"$max - $min"),
+            Operation(min * max, s"$min * $max"),
+            Operation(max / min, s"$max / $min")
+        ).filter(operation => operation.value > 0 && operation.value % 1 == 0 &&
+                operation.value != min && operation.value != max)
     }
 
     def generateIndexPairs(listSize: Int): List[(Int, Int)] = {
@@ -20,7 +27,10 @@ class Countdown(picked: List[Int], target: Int) {
         val max = numberList.values(indexPair._2)
         val integerPairOperationValues = applyOperatorsToIntegerPair(min, max)
         val listWithIndexPairRemoved = numberList.values diff List(min, max)
-        integerPairOperationValues.toList.map(value => Calculation((listWithIndexPairRemoved :+ value).sorted))
+        integerPairOperationValues.map(operation =>
+            Calculation((listWithIndexPairRemoved :+ operation.value).sorted,
+                numberList.representation :+ operation.representation)
+        )
     }
 
     def performOneOperationOnCurrentLists(listOfNumberLists: List[Calculation]): List[Calculation] = {
