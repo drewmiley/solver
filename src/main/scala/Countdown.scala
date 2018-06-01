@@ -1,8 +1,9 @@
 package main.scala
 
 class Countdown(picked: List[Int], target: Int) {
-    private class State(var currentResult: List[List[Int]] = List(),
-                        var solutions: List[List[Int]] = List())
+    private case class State(currentResult: List[List[Int]] = List(), solutions: List[List[Int]] = List())
+
+    private case class Calculation(values: List[Int], representation: String)
 
     def applyOperatorsToIntegerPair(min: Int, max: Int): Set[Int] = {
         (Set(min + max, max - min, min * max, max / min) diff Set(min, max))
