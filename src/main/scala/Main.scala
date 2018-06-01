@@ -10,12 +10,10 @@ object Main extends App {
     val answerPicker = new NumberPicker((101 to 999).toList)
 
     val pickedNumbers = smallPicker.select(smallNumbers).sorted ++ largePicker.select(largeNumbers)
-
-    println(pickedNumbers)
+    println(pickedNumbers.mkString("Picked | ", ", ", ""))
 
     val targetNumber = answerPicker.select(1).head
-
-    println(targetNumber)
+    println(s"Target | $targetNumber")
 
     val solutions = Countdown.solve(pickedNumbers, targetNumber).solutions
     Countdown.formPrintableSolutions(solutions).foreach(println)

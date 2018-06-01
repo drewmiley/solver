@@ -2,19 +2,18 @@ package main.scala
 
 case class Calculation(values: List[Int], representation: List[String] = List())
 
-case class Operation(value: Int, representation: String = "")
+case class Operation(value: Float, representation: String = "")
 
 case class State(currentResult: List[Calculation] = List(), solutions: List[Calculation] = List())
 
 object Countdown {
-
 
     def applyOperatorsToIntegerPair(min: Int, max: Int): List[Operation] = {
         List(
             Operation(min + max, s"$min + $max = ${ min + max }"),
             Operation(max - min, s"$max - $min = ${ max - min }"),
             Operation(min * max, s"$min * $max = ${ min * max }"),
-            Operation(max / min, s"$max / $min = ${ max / min }")
+            Operation(max.toFloat / min, s"$max / $min = ${ max / min }")
         ).filter(operation => operation.value > 0 && operation.value % 1 == 0 &&
                 operation.value != min && operation.value != max)
     }
@@ -29,7 +28,7 @@ object Countdown {
         val integerPairOperationValues = applyOperatorsToIntegerPair(min, max)
         val listWithIndexPairRemoved = numberList.values diff List(min, max)
         integerPairOperationValues.map(operation =>
-            Calculation((listWithIndexPairRemoved :+ operation.value).sorted,
+            Calculation((listWithIndexPairRemoved :+ operation.value.toInt).sorted,
                 numberList.representation :+ operation.representation)
         )
     }
@@ -54,9 +53,5 @@ object Countdown {
         recurse(state)
     }
 
-    def formPrintableSolutions(solutions: List[Calculation]): List[String] = solutions.map(solution => {
-        println(solution.values)
-        println(solution.representation)
-        "Solved"
-    })
+    def formPrintableSolutions(solutions: List[Calculation]): List[String] = solutions.map(_.representation.mkString("Solved | ", ", ", ""))
 }
