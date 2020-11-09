@@ -3,3 +3,5 @@ out
 *.class
 *.log
 .idea
+.DS_Store
+project
