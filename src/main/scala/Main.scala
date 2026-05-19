@@ -38,20 +38,28 @@ object Main {
                             largeRandom: Option[Int] = None,
                             target : Option[Int] = None): List[Calculation] = {
     def getPickedNumbers: List[Int] = {
-      val largeNumbers = 1
-      val smallNumbers = 6 - largeNumbers
+      picked match {
+        case Some(intList) => intList
+        case None =>
+          val largeNumbers = largeRandom.getOrElse(1)
+          val smallNumbers = smallRandom.getOrElse(6 - largeNumbers)
 
-      val largePicker = new NumberPicker((1 to 4).map(d => 25 * d).toList)
-      val smallPicker = new NumberPicker((1 to 10).toList ++ (1 to 10).toList)
+          val largePicker = new NumberPicker((1 to 4).map(d => 25 * d).toList)
+          val smallPicker = new NumberPicker((1 to 10).toList ++ (1 to 10).toList)
 
-      val pickedNumbers = smallPicker.select(smallNumbers).sorted ++ largePicker.select(largeNumbers)
-      pickedNumbers
+          val pickedNumbers = smallPicker.select(smallNumbers).sorted ++ largePicker.select(largeNumbers)
+          pickedNumbers
+      }
     }
 
     def getTargetNumber: Int = {
-      val answerPicker = new NumberPicker((101 to 999).toList)
-      val targetNumber = answerPicker.select(1).head
-      targetNumber
+      target match {
+        case Some(value) => value
+        case None =>
+          val answerPicker = new NumberPicker((101 to 999).toList)
+          val targetNumber = answerPicker.select(1).head
+          targetNumber
+      }
     }
 
     val pickedNumbers = getPickedNumbers
