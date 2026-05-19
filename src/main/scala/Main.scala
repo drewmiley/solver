@@ -37,18 +37,27 @@ object Main {
                             smallRandom: Option[Int] = None,
                             largeRandom: Option[Int] = None,
                             target : Option[Int] = None): List[Calculation] = {
-    val largeNumbers = 1
-    val smallNumbers = 6 - largeNumbers
+    def getPickedNumbers: List[Int] = {
+      val largeNumbers = 1
+      val smallNumbers = 6 - largeNumbers
 
-    val largePicker = new NumberPicker((1 to 4).map(d => 25 * d).toList)
-    val smallPicker = new NumberPicker((1 to 10).toList ++ (1 to 10).toList)
+      val largePicker = new NumberPicker((1 to 4).map(d => 25 * d).toList)
+      val smallPicker = new NumberPicker((1 to 10).toList ++ (1 to 10).toList)
 
-    val answerPicker = new NumberPicker((101 to 999).toList)
+      val pickedNumbers = smallPicker.select(smallNumbers).sorted ++ largePicker.select(largeNumbers)
+      pickedNumbers
+    }
 
-    val pickedNumbers = smallPicker.select(smallNumbers).sorted ++ largePicker.select(largeNumbers)
+    def getTargetNumber: Int = {
+      val answerPicker = new NumberPicker((101 to 999).toList)
+      val targetNumber = answerPicker.select(1).head
+      targetNumber
+    }
+
+    val pickedNumbers = getPickedNumbers
     println(pickedNumbers.mkString("Picked | ", ", ", ""))
 
-    val targetNumber = answerPicker.select(1).head
+    val targetNumber = getTargetNumber
     println(s"Target | $targetNumber")
 
     val solutions: List[Calculation] = Countdown.solve(pickedNumbers, targetNumber).solutions
