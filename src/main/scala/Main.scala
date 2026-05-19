@@ -11,16 +11,26 @@ object Main {
     val largeRandom: Option[Int] = getConfigIntFromArgs(argsList, "largeRandom")
     val target : Option[Int] = getConfigIntFromArgs(argsList, "target")
 
-    val solutions: List[Calculation] = findSolutions()
+    val solutions: List[Calculation] = findSolutions(picked, smallRandom, largeRandom, target)
     Countdown.formPrintableSolutions(solutions).foreach(println)
   }
 
   private def getConfigIntFromArgs(args: List[String], argKey: String): Option[Int] = {
-    None
+    args.indexOf(argKey) match {
+      case -1 => None
+      case argKeyIndex =>
+        val argValue = args.splitAt(argKeyIndex)._2.head
+        if (argValue.isEmpty) None else Some(argValue.toInt)
+    }
   }
 
   private def getConfigIntListFromArgs(args: List[String], argKey: String): Option[List[Int]] = {
-    None
+    args.indexOf(argKey) match {
+      case -1 => None
+      case argKeyIndex =>
+        val argValue = args.splitAt(argKeyIndex)._2.head
+        if (argValue.isEmpty) None else Some(argValue.split(",").map(_.toInt).toList)
+    }
   }
 
   private def findSolutions(picked: Option[List[Int]] = None,
