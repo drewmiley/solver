@@ -2,8 +2,6 @@ package main
 
 object Main {
   def main(args: Array[String]): Unit = {
-    println(args.toList)
-    println(args.length)
     val argsList = args.toList
 
     val picked: Option[List[Int]] = getConfigIntListFromArgs(argsList, "picked")
@@ -19,8 +17,8 @@ object Main {
     args.indexOf(argKey) match {
       case -1 => None
       case argKeyIndex =>
-        val argValue = args.splitAt(argKeyIndex)._2.head
-        if (argValue.isEmpty) None else Some(argValue.toInt)
+        val argValue = args.splitAt(argKeyIndex + 1)._2.head
+        if (argValue.nonEmpty) Some(argValue.toInt) else None
     }
   }
 
@@ -28,8 +26,8 @@ object Main {
     args.indexOf(argKey) match {
       case -1 => None
       case argKeyIndex =>
-        val argValue = args.splitAt(argKeyIndex)._2.head
-        if (argValue.isEmpty) None else Some(argValue.split(",").map(_.toInt).toList)
+        val argValue = args.splitAt(argKeyIndex + 1)._2.head
+        if (argValue.nonEmpty) Some(argValue.split(",").map(_.toInt).toList) else None
     }
   }
 
