@@ -1,4 +1,4 @@
-package main.scala
+package main
 
 case class Calculation(values: List[Int], representation: List[String] = List())
 
