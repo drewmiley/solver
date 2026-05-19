@@ -2,6 +2,31 @@ package main
 
 object Main {
   def main(args: Array[String]): Unit = {
+    println(args.toList)
+    println(args.length)
+    val argsList = args.toList
+
+    val picked: Option[List[Int]] = getConfigIntListFromArgs(argsList, "picked")
+    val smallRandom: Option[Int] = getConfigIntFromArgs(argsList, "smallRandom")
+    val largeRandom: Option[Int] = getConfigIntFromArgs(argsList, "largeRandom")
+    val target : Option[Int] = getConfigIntFromArgs(argsList, "target")
+
+    val solutions: List[Calculation] = findSolutions()
+    Countdown.formPrintableSolutions(solutions).foreach(println)
+  }
+
+  private def getConfigIntFromArgs(args: List[String], argKey: String): Option[Int] = {
+    None
+  }
+
+  private def getConfigIntListFromArgs(args: List[String], argKey: String): Option[List[Int]] = {
+    None
+  }
+
+  private def findSolutions(picked: Option[List[Int]] = None,
+                            smallRandom: Option[Int] = None,
+                            largeRandom: Option[Int] = None,
+                            target : Option[Int] = None): List[Calculation] = {
     val largeNumbers = 1
     val smallNumbers = 6 - largeNumbers
 
@@ -17,6 +42,6 @@ object Main {
     println(s"Target | $targetNumber")
 
     val solutions: List[Calculation] = Countdown.solve(pickedNumbers, targetNumber).solutions
-    Countdown.formPrintableSolutions(solutions).foreach(println)
+    solutions
   }
 }
