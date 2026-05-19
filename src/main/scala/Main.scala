@@ -16,7 +16,7 @@ object Main {
     val targetNumber = answerPicker.select(1).head
     println(s"Target | $targetNumber")
 
-    val solutions = Countdown.solve(pickedNumbers, targetNumber).solutions
+    val solutions: List[Calculation] = Countdown.solve(pickedNumbers, targetNumber).solutions
     Countdown.formPrintableSolutions(solutions).foreach(println)
   }
 }
