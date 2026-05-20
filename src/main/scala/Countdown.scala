@@ -8,6 +8,7 @@ case class Operation(value: Float, representation: String)
 
 case class State(currentResult: List[Calculation], solutions: List[Calculation] = List())
 
+// TODO: Annotated example of this working step-by-step
 object Countdown {
 
   def applyOperatorsToIntegerPair(min: Int, max: Int): List[Operation] = {
