@@ -1,11 +1,15 @@
-package main.scala
+package main
+
+import scala.annotation.tailrec
 
 case class Calculation(values: List[Int], representation: List[String] = List())
 
 case class Operation(value: Float, representation: String)
 
+//TODO: Is there a way to filter duplicate solutions - possibly multiple additions, subtractions, multiplications, divisions - 3 numbers -> 1 with symmetry?
 case class State(currentResult: List[Calculation], solutions: List[Calculation] = List())
 
+// TODO: Annotated example of this working step-by-step
 object Countdown {
 
   def applyOperatorsToIntegerPair(min: Int, max: Int): List[Operation] = {
@@ -43,6 +47,7 @@ object Countdown {
 
   def solve(picked: List[Int], target: Int): State = {
     val state: State = State(List(Calculation(picked)))
+    @tailrec
     def recurse(state: State): State = if (state.currentResult.map(_.values).exists(_.size > 1)) {
       val calculatedValues: List[Calculation] = performOneOperationOnCurrentLists(state.currentResult)
       recurse(
