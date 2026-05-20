@@ -17,3 +17,4 @@ A small routine that solves Countdown number rounds
 * `largeRandom` defaults to 1 when it is not set
 * To run with specific number of `smallRandom`, run `run smallRandom SMALL_RANDOM` where SMALL_RANDOM is number of small random to pick.
 * `smallRandom` defaults to 6 - largeRandom when it is not set
+* To specify multiple options, just define them all after `run` in an additive way
