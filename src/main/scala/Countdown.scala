@@ -6,6 +6,7 @@ case class Calculation(values: List[Int], representation: List[String] = List())
 
 case class Operation(value: Float, representation: String)
 
+//TODO: Is there a way to filter duplicate solutions - possibly multiple additions, subtractions, multiplications, divisions - 3 numbers -> 1 with symmetry?
 case class State(currentResult: List[Calculation], solutions: List[Calculation] = List())
 
 // TODO: Annotated example of this working step-by-step
