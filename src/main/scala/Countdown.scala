@@ -1,5 +1,7 @@
 package main
 
+import scala.annotation.tailrec
+
 case class Calculation(values: List[Int], representation: List[String] = List())
 
 case class Operation(value: Float, representation: String)
@@ -43,6 +45,7 @@ object Countdown {
 
   def solve(picked: List[Int], target: Int): State = {
     val state: State = State(List(Calculation(picked)))
+    @tailrec
     def recurse(state: State): State = if (state.currentResult.map(_.values).exists(_.size > 1)) {
       val calculatedValues: List[Calculation] = performOneOperationOnCurrentLists(state.currentResult)
       recurse(
