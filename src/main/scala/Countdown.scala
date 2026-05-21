@@ -44,12 +44,16 @@ object Countdown {
           .flatMap(operateOnIntegerPairAndCreateNewLists(numberList, _))
       )
 
-  private def removeDuplicates(calculatedValues: List[Calculation]): List[Calculation] = {
+  private def removeDuplicates(calculations: List[Calculation]): List[Calculation] = {
     //TODO: Is there a way to filter duplicate solutions - possibly multiple additions, subtractions, multiplications, divisions - 3 numbers -> 1 with symmetry?
     //List types of duplication here. String are equal, two adds, two multiplies, two divides.
     //Good example to use on this is: run picked 1,2,3,4,6,20 target 179
     println("CHECK HERE")
-    calculatedValues
+//    Is it as simple as checking the values left is the same??
+//    TODO: Add filterDuplicate as config option
+    val calculationsGroupedByValues = calculations.groupBy(_.values)
+    val bls = List(1,2,3).equals(List(1,2,3))
+    calculations
   }
 
   def solve(picked: List[Int], target: Int): State = {
