@@ -6,9 +6,6 @@ case class Calculation(values: List[Int], representation: List[String] = List())
 
 case class Operation(value: Float, representation: String)
 
-//TODO: Is there a way to filter duplicate solutions - possibly multiple additions, subtractions, multiplications, divisions - 3 numbers -> 1 with symmetry?
-//List types of duplication here. String are equal, two adds, two multiplies, two divides.
-//Good example to use on this is: run picked 1,2,3,4,6,20 target 179
 case class State(currentResult: List[Calculation], solutions: List[Calculation] = List())
 
 // TODO: Annotated example of this working step-by-step
@@ -47,15 +44,24 @@ object Countdown {
           .flatMap(operateOnIntegerPairAndCreateNewLists(numberList, _))
       )
 
+  private def removeDuplicates(calculatedValues: List[Calculation]): List[Calculation] = {
+    //TODO: Is there a way to filter duplicate solutions - possibly multiple additions, subtractions, multiplications, divisions - 3 numbers -> 1 with symmetry?
+    //List types of duplication here. String are equal, two adds, two multiplies, two divides.
+    //Good example to use on this is: run picked 1,2,3,4,6,20 target 179
+    println("CHECK HERE")
+    calculatedValues
+  }
+
   def solve(picked: List[Int], target: Int): State = {
     val state: State = State(List(Calculation(picked)))
     @tailrec
     def recurse(state: State): State = if (state.currentResult.map(_.values).exists(_.size > 1)) {
       val calculatedValues: List[Calculation] = performOneOperationOnCurrentLists(state.currentResult)
+      val currentCalculationsWithDuplicatesRemoved: List[Calculation] = removeDuplicates(calculatedValues)
       recurse(
         State(
-          calculatedValues.filter(!_.values.contains(target)),
-          state.solutions ++ calculatedValues.filter(_.values.contains(target))
+          currentCalculationsWithDuplicatesRemoved.filter(!_.values.contains(target)),
+          state.solutions ++ currentCalculationsWithDuplicatesRemoved.filter(_.values.contains(target))
         )
       )
     } else {

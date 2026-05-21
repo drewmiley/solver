@@ -9,7 +9,9 @@ object Main {
     val largeRandom: Option[Int] = getConfigIntFromArgs(argsList, "largeRandom")
     val target : Option[Int] = getConfigIntFromArgs(argsList, "target")
 
-    val solutions: List[Calculation] = findSolutions(picked, smallRandom, largeRandom, target)
+//    TODO: Temp for local testing of remove duplicates
+//    val solutions: List[Calculation] = findSolutions(picked, smallRandom, largeRandom, target)
+    val solutions: List[Calculation] = findSolutions(Some(List(1,2,3,4,6,20)), smallRandom, largeRandom, Some(179))
     Countdown.formPrintableSolutions(solutions).foreach(println)
   }
 
