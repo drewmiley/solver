@@ -19,4 +19,6 @@ A small routine that solves Countdown number rounds
 * `smallRandom` defaults to 6 - largeRandom when it is not set
 * To leave in duplicate solutions, run `run filterDuplicate false`.
 * `filterDuplicate` defaults to true when not specified
+* To not display solutions, run `run displaySolution false`.
+* `displaySolution` defaults to true when not specified
 * To specify multiple options, just define them all after `run` in an additive way
