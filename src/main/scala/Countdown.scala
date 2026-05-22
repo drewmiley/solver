@@ -44,16 +44,9 @@ object Countdown {
           .flatMap(operateOnIntegerPairAndCreateNewLists(numberList, _))
       )
 
-  private def removeDuplicates(calculations: List[Calculation]): List[Calculation] = {
-    //TODO: Is there a way to filter duplicate solutions - possibly multiple additions, subtractions, multiplications, divisions - 3 numbers -> 1 with symmetry?
-    //List types of duplication here. String are equal, two adds, two multiplies, two divides.
-    //Good example to use on this is: run picked 1,2,3,4,6,20 target 179
-    println("CHECK HERE")
-//    Is it as simple as checking the values left is the same??
-//    TODO: Add filterDuplicate as config option
-    val calculationsGroupedByValues = calculations.groupBy(_.values)
-    val bls = List(1,2,3).equals(List(1,2,3))
-    calculations
+  private def filterDuplicateCalculations(calculations: List[Calculation]): List[Calculation] = {
+    val calculationsGroupedByValues: Map[List[Int], List[Calculation]] = calculations.groupBy(_.values)
+    calculationsGroupedByValues.map(_._2.head).toList
   }
 
   def solve(picked: List[Int], target: Int, filterDuplicate: Boolean): State = {
@@ -61,7 +54,8 @@ object Countdown {
     @tailrec
     def recurse(state: State): State = if (state.currentResult.map(_.values).exists(_.size > 1)) {
       val calculatedValues: List[Calculation] = performOneOperationOnCurrentLists(state.currentResult)
-      val currentCalculationsWithFilteredDuplicate: List[Calculation] = if (filterDuplicate) removeDuplicates(calculatedValues) else calculatedValues
+      val currentCalculationsWithFilteredDuplicate: List[Calculation] =
+        if (filterDuplicate) filterDuplicateCalculations(calculatedValues) else calculatedValues
       recurse(
         State(
           currentCalculationsWithFilteredDuplicate.filter(!_.values.contains(target)),
