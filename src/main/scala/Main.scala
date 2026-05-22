@@ -1,6 +1,9 @@
 package main
 
+import Util._
+
 object Main {
+
   def main(args: Array[String]): Unit = {
     val argsList = args.toList
 
@@ -8,33 +11,17 @@ object Main {
     val smallRandom: Option[Int] = getConfigIntFromArgs(argsList, "smallRandom")
     val largeRandom: Option[Int] = getConfigIntFromArgs(argsList, "largeRandom")
     val target : Option[Int] = getConfigIntFromArgs(argsList, "target")
+    val filterDuplicate: Boolean = getConfigBoolFromArgs(argsList, "filterDuplicate").getOrElse(true)
 
-    val solutions: List[Calculation] = findSolutions(picked, smallRandom, largeRandom, target)
-    Countdown.formPrintableSolutions(solutions).foreach(println)
-  }
-
-  private def getConfigIntFromArgs(args: List[String], argKey: String): Option[Int] = {
-    args.indexOf(argKey) match {
-      case -1 => None
-      case argKeyIndex =>
-        val argValue = args.splitAt(argKeyIndex + 1)._2.head
-        if (argValue.nonEmpty) Some(argValue.toInt) else None
-    }
-  }
-
-  private def getConfigIntListFromArgs(args: List[String], argKey: String): Option[List[Int]] = {
-    args.indexOf(argKey) match {
-      case -1 => None
-      case argKeyIndex =>
-        val argValue = args.splitAt(argKeyIndex + 1)._2.head
-        if (argValue.nonEmpty) Some(argValue.split(",").map(_.toInt).toList) else None
-    }
+    val solutions: List[Calculation] = findSolutions(picked, smallRandom, largeRandom, target, filterDuplicate)
+    solutions.map(_.representation.mkString(", ")).foreach(printValue("Solved", _))
   }
 
   private def findSolutions(picked: Option[List[Int]] = None,
                             smallRandom: Option[Int] = None,
                             largeRandom: Option[Int] = None,
-                            target : Option[Int] = None): List[Calculation] = {
+                            target : Option[Int] = None,
+                            filterDuplicate: Boolean = true): List[Calculation] = {
     def getPickedNumbers: List[Int] = {
       picked match {
         case Some(intList) => intList
@@ -61,12 +48,12 @@ object Main {
     }
 
     val pickedNumbers = getPickedNumbers
-    println(pickedNumbers.mkString("Picked | ", ", ", ""))
+    printValue("Picked", pickedNumbers.mkString(", "))
 
     val targetNumber = getTargetNumber
-    println(s"Target | $targetNumber")
+    printValue("Target", targetNumber.toString)
 
-    val solutions: List[Calculation] = Countdown.solve(pickedNumbers, targetNumber).solutions
+    val solutions: List[Calculation] = Countdown.solve(pickedNumbers, targetNumber, filterDuplicate).solutions
     solutions
   }
 }
