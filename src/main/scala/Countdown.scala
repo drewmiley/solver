@@ -43,12 +43,14 @@ object Countdown {
           .flatMap(operateOnIntegerPairAndCreateNewLists(numberList, _))
       )
 
-  private def filterDuplicateCalculations(calculations: List[Calculation]): List[Calculation] = {
+//  TODO: Add tests
+  def filterDuplicateCalculations(calculations: List[Calculation]): List[Calculation] = {
     val calculationsGroupedByValues: Map[List[Int], List[Calculation]] = calculations.groupBy(_.values)
     calculationsGroupedByValues.map(_._2.head).toList
   }
 
-  private def getNewState(target: Int, filterDuplicate: Boolean)(state: State): State = {
+//  TODO: Add tests
+  def getNewState(target: Int, filterDuplicate: Boolean)(state: State): State = {
     val calculatedValues: List[Calculation] = performOneOperationOnCurrentLists(state.currentResult)
     val currentCalculationsWithFilteredDuplicate: List[Calculation] =
       if (filterDuplicate) filterDuplicateCalculations(calculatedValues) else calculatedValues
