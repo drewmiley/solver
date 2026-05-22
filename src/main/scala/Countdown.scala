@@ -61,11 +61,11 @@ object Countdown {
     @tailrec
     def recurse(state: State): State = if (state.currentResult.map(_.values).exists(_.size > 1)) {
       val calculatedValues: List[Calculation] = performOneOperationOnCurrentLists(state.currentResult)
-      val currentCalculationsWithDuplicatesRemoved: List[Calculation] = removeDuplicates(calculatedValues)
+      val currentCalculationsWithFilteredDuplicate: List[Calculation] = if (filterDuplicate) removeDuplicates(calculatedValues) else calculatedValues
       recurse(
         State(
-          currentCalculationsWithDuplicatesRemoved.filter(!_.values.contains(target)),
-          state.solutions ++ currentCalculationsWithDuplicatesRemoved.filter(_.values.contains(target))
+          currentCalculationsWithFilteredDuplicate.filter(!_.values.contains(target)),
+          state.solutions ++ currentCalculationsWithFilteredDuplicate.filter(_.values.contains(target))
         )
       )
     } else {
