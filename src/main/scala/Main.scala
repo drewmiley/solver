@@ -11,11 +11,21 @@ object Main {
     val smallRandom: Option[Int] = getConfigIntFromArgs(argsList, "smallRandom")
     val largeRandom: Option[Int] = getConfigIntFromArgs(argsList, "largeRandom")
     val target : Option[Int] = getConfigIntFromArgs(argsList, "target")
+    val filterDuplicate: Boolean = getConfigBoolFromArgs(argsList, "filterDuplicate").getOrElse(true)
 
 //    TODO: Temp for local testing of remove duplicates
-//    val solutions: List[Calculation] = findSolutions(picked, smallRandom, largeRandom, target)
-    val solutions: List[Calculation] = findSolutions(Some(List(1,2,3,4,6,20)), smallRandom, largeRandom, Some(179))
+//    val solutions: List[Calculation] = findSolutions(picked, smallRandom, largeRandom, target, filterDuplicate)
+    val solutions: List[Calculation] = findSolutions(Some(List(1,2,3,4,6,20)), smallRandom, largeRandom, Some(179), filterDuplicate)
     Countdown.formPrintableSolutions(solutions).foreach(println)
+  }
+
+  private def getConfigBoolFromArgs(args: List[String], argKey: String): Option[Boolean] = {
+    args.indexOf(argKey) match {
+      case -1 => None
+      case argKeyIndex =>
+        val argValue = args.splitAt(argKeyIndex + 1)._2.head
+        if (argValue.nonEmpty) Some(argValue.toBoolean) else None
+    }
   }
 
   private def getConfigIntFromArgs(args: List[String], argKey: String): Option[Int] = {
@@ -39,7 +49,8 @@ object Main {
   private def findSolutions(picked: Option[List[Int]] = None,
                             smallRandom: Option[Int] = None,
                             largeRandom: Option[Int] = None,
-                            target : Option[Int] = None): List[Calculation] = {
+                            target : Option[Int] = None,
+                            filterDuplicate: Boolean = true): List[Calculation] = {
     def getPickedNumbers: List[Int] = {
       picked match {
         case Some(intList) => intList
@@ -71,7 +82,7 @@ object Main {
     val targetNumber = getTargetNumber
     printValue("Target", targetNumber.toString)
 
-    val solutions: List[Calculation] = Countdown.solve(pickedNumbers, targetNumber).solutions
+    val solutions: List[Calculation] = Countdown.solve(pickedNumbers, targetNumber, filterDuplicate).solutions
     solutions
   }
 }

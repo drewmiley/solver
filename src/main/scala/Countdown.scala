@@ -56,7 +56,7 @@ object Countdown {
     calculations
   }
 
-  def solve(picked: List[Int], target: Int): State = {
+  def solve(picked: List[Int], target: Int, filterDuplicate: Boolean): State = {
     val state: State = State(List(Calculation(picked)))
     @tailrec
     def recurse(state: State): State = if (state.currentResult.map(_.values).exists(_.size > 1)) {
