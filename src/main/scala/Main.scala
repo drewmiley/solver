@@ -1,10 +1,8 @@
 package main
 
+import Util._
+
 object Main {
-
-  private def printValue(name: String, output: String): Unit = println(s"$name | $output")
-
-  private def formPrintableSolutions(solutions: List[Calculation]): List[String] = solutions.map(_.representation.mkString("Solved | ", ", ", ""))
 
   def main(args: Array[String]): Unit = {
     val argsList = args.toList
@@ -20,33 +18,6 @@ object Main {
     val solutions: List[Calculation] = findSolutions(Some(List(1,2,3,4,6,20)), smallRandom, largeRandom, Some(179), filterDuplicate)
     solutions.map(_.representation.mkString(", ")).foreach(printValue("Solved", _))
 //    formPrintableSolutions(solutions).foreach(println)
-  }
-
-  private def getConfigBoolFromArgs(args: List[String], argKey: String): Option[Boolean] = {
-    args.indexOf(argKey) match {
-      case -1 => None
-      case argKeyIndex =>
-        val argValue = args.splitAt(argKeyIndex + 1)._2.head
-        if (argValue.nonEmpty) Some(argValue.toBoolean) else None
-    }
-  }
-
-  private def getConfigIntFromArgs(args: List[String], argKey: String): Option[Int] = {
-    args.indexOf(argKey) match {
-      case -1 => None
-      case argKeyIndex =>
-        val argValue = args.splitAt(argKeyIndex + 1)._2.head
-        if (argValue.nonEmpty) Some(argValue.toInt) else None
-    }
-  }
-
-  private def getConfigIntListFromArgs(args: List[String], argKey: String): Option[List[Int]] = {
-    args.indexOf(argKey) match {
-      case -1 => None
-      case argKeyIndex =>
-        val argValue = args.splitAt(argKeyIndex + 1)._2.head
-        if (argValue.nonEmpty) Some(argValue.split(",").map(_.toInt).toList) else None
-    }
   }
 
   private def findSolutions(picked: Option[List[Int]] = None,
