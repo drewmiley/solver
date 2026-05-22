@@ -10,9 +10,8 @@ case class State(currentResult: List[Calculation], solutions: List[Calculation] 
 
 object Countdown {
 
-  def generateIndexPairs(listSize: Int): List[(Int, Int)] = {
+  def generateIndexPairs(listSize: Int): List[(Int, Int)] =
     (0 until listSize).flatMap(i => (i + 1 until listSize).map(j => (i, j))).toList
-  }
 
   private val indexPairsListSize2 = generateIndexPairs(2)
   private val indexPairsListSize3 = generateIndexPairs(3)

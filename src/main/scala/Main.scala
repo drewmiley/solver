@@ -5,8 +5,6 @@ import Util._
 
 object Main {
 
-  private val IS_DEMO = false
-
   def main(args: Array[String]): Unit = {
     val argsList = args.toList
 
@@ -16,7 +14,7 @@ object Main {
     val target : Option[Int] = getConfigIntFromArgs(argsList, "target")
     val filterDuplicate: Boolean = getConfigBoolFromArgs(argsList, "filterDuplicate").getOrElse(true)
     val displaySolutions: Boolean = getConfigBoolFromArgs(argsList, "displaySolutions").getOrElse(true)
-    if (IS_DEMO) runDemo() else {
+    if (sys.env("DEMO") == "true") runDemo() else {
       val solutions: List[Calculation] = findSolutions(picked, smallRandom, largeRandom, target, filterDuplicate)
       val solutionsDisplayText = if (filterDuplicate) "No. Solutions (Distinct)" else "No. Solutions (inc. duplicate)"
       printValue(solutionsDisplayText, solutions.length.toString)
