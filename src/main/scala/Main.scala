@@ -12,9 +12,12 @@ object Main {
     val largeRandom: Option[Int] = getConfigIntFromArgs(argsList, "largeRandom")
     val target : Option[Int] = getConfigIntFromArgs(argsList, "target")
     val filterDuplicate: Boolean = getConfigBoolFromArgs(argsList, "filterDuplicate").getOrElse(true)
+    val displaySolutions: Boolean = getConfigBoolFromArgs(argsList, "displaySolutions").getOrElse(true)
 
     val solutions: List[Calculation] = findSolutions(picked, smallRandom, largeRandom, target, filterDuplicate)
-    solutions.map(_.representation.mkString(", ")).foreach(printValue("Solved", _))
+    val solutionsDisplayText = if (filterDuplicate) "No. Solutions (Distinct)" else "No. Solutions (inc. duplicate)"
+    printValue(solutionsDisplayText, solutions.length.toString)
+    if (displaySolutions) solutions.map(_.representation.mkString(", ")).foreach(printValue("Solved", _))
   }
 
   private def findSolutions(picked: Option[List[Int]] = None,
