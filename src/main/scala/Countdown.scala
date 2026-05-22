@@ -2,13 +2,12 @@ package main
 
 import scala.annotation.tailrec
 
-case class Calculation(values: List[Int], representation: List[String] = List())
+case class Calculation(values: List[Int], representation: List[String] = List.empty)
 
 case class Operation(value: Float, representation: String)
 
-case class State(currentResult: List[Calculation], solutions: List[Calculation] = List())
+case class State(currentResult: List[Calculation], solutions: List[Calculation] = List.empty)
 
-// TODO: Annotated example of this working step-by-step
 object Countdown {
 
   def applyOperatorsToIntegerPair(min: Int, max: Int): List[Operation] = {
@@ -49,19 +48,25 @@ object Countdown {
     calculationsGroupedByValues.map(_._2.head).toList
   }
 
+  private def getNewState(target: Int, filterDuplicate: Boolean)(state: State): State = {
+    val calculatedValues: List[Calculation] = performOneOperationOnCurrentLists(state.currentResult)
+    val currentCalculationsWithFilteredDuplicate: List[Calculation] =
+      if (filterDuplicate) filterDuplicateCalculations(calculatedValues) else calculatedValues
+    val calculationsSplitByIfTarget: Map[Boolean, List[Calculation]] =
+      currentCalculationsWithFilteredDuplicate.groupBy(_.values.contains(target))
+    val currentResult = calculationsSplitByIfTarget.getOrElse(false, List.empty)
+    val solutions = state.solutions ++ calculationsSplitByIfTarget.getOrElse(true, List.empty)
+    val newState = State(currentResult, solutions)
+    newState
+  }
+
   def solve(picked: List[Int], target: Int, filterDuplicate: Boolean): State = {
     val state: State = State(List(Calculation(picked)))
+    val initGetNewState: State => State = getNewState(target, filterDuplicate)
     @tailrec
     def recurse(state: State): State = if (state.currentResult.map(_.values).exists(_.size > 1)) {
-      val calculatedValues: List[Calculation] = performOneOperationOnCurrentLists(state.currentResult)
-      val currentCalculationsWithFilteredDuplicate: List[Calculation] =
-        if (filterDuplicate) filterDuplicateCalculations(calculatedValues) else calculatedValues
-      recurse(
-        State(
-          currentCalculationsWithFilteredDuplicate.filter(!_.values.contains(target)),
-          state.solutions ++ currentCalculationsWithFilteredDuplicate.filter(_.values.contains(target))
-        )
-      )
+      val newState = initGetNewState(state)
+      recurse(newState)
     } else {
       state
     }
