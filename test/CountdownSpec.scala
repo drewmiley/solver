@@ -10,7 +10,7 @@ class CountdownSpec extends FlatSpec with BeforeAndAfterEach {
   }
 
   "applyOperatorsToIntegerPair" should "be List(Operation(2,1 + 1 = 2)) for param 1, 1" in {
-    assert(applyOperatorsToIntegerPair(1, 1) == List(Operation(2,"1 + 1 = 2")))
+    assert(applyOperatorsToIntegerPair(1, 1) == List(AdditionOperation(1, 1)))
   }
 
   "applyOperatorsToIntegerPair" should "be a set of at most size 3 for param i, i" in {

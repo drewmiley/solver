@@ -2,12 +2,6 @@ package main
 
 import scala.annotation.tailrec
 
-case class Calculation(values: List[Int], representation: List[String] = List.empty)
-
-case class Operation(value: Float, representation: String)
-
-case class State(currentResult: List[Calculation], solutions: List[Calculation] = List.empty)
-
 object Countdown {
 
   def generateIndexPairs(listSize: Int): List[(Int, Int)] =
@@ -32,10 +26,10 @@ object Countdown {
 
   def applyOperatorsToIntegerPair(min: Int, max: Int): List[Operation] = {
     List(
-      Operation(min + max, s"$min + $max = ${ min + max }"),
-      Operation(max - min, s"$max - $min = ${ max - min }"),
-      Operation(min * max, s"$min * $max = ${ min * max }"),
-      Operation(max.toFloat / min, s"$max / $min = ${ max / min }")
+      AdditionOperation(min, max),
+      SubtractionOperation(min, max),
+      MultiplyOperation(min, max),
+      DivideOperation(min, max)
     ).filter(operation => operation.value > 0 && operation.value % 1 == 0 &&
       operation.value != min && operation.value != max)
   }
