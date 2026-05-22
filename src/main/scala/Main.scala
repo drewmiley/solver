@@ -14,7 +14,7 @@ object Main {
     val target : Option[Int] = getConfigIntFromArgs(argsList, "target")
     val filterDuplicate: Boolean = getConfigBoolFromArgs(argsList, "filterDuplicate").getOrElse(true)
     val displaySolutions: Boolean = getConfigBoolFromArgs(argsList, "displaySolutions").getOrElse(true)
-    if (sys.env("DEMO") == "true") runDemo() else {
+    if (sys.env.get("DEMO").contains("true")) runDemo() else {
       val solutions: List[Calculation] = findSolutions(picked, smallRandom, largeRandom, target, filterDuplicate)
       val solutionsDisplayText = if (filterDuplicate) "No. Solutions (Distinct)" else "No. Solutions (inc. duplicate)"
       printValue(solutionsDisplayText, solutions.length.toString)

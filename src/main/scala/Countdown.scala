@@ -58,6 +58,13 @@ object Countdown {
     calculationsGroupedByValues.map(_._2.head).toList
   }
 
+  def filterDuplicateSolutions(solutions: List[Calculation], newSolutions: List[Calculation]): List[Calculation] = {
+    val validNewSolutions = newSolutions.filter(newSolution => {
+      !solutions.exists(solution => (solution.representation diff newSolution.representation).isEmpty)
+    })
+    solutions ++ validNewSolutions
+  }
+
   def getNewState(target: Int, filterDuplicate: Boolean)(state: State): State = {
     val calculatedValues: List[Calculation] = performOneOperationOnCurrentLists(state.currentResult)
     val currentCalculationsWithFilteredDuplicate: List[Calculation] =
@@ -65,7 +72,7 @@ object Countdown {
     val calculationsSplitByIfTarget: Map[Boolean, List[Calculation]] =
       currentCalculationsWithFilteredDuplicate.groupBy(_.values.contains(target))
     val currentResult = calculationsSplitByIfTarget.getOrElse(false, List.empty)
-    val solutions = state.solutions ++ calculationsSplitByIfTarget.getOrElse(true, List.empty)
+    val solutions = filterDuplicateSolutions(state.solutions, calculationsSplitByIfTarget.getOrElse(true, List.empty))
     val newState = State(currentResult, solutions)
     newState
   }
