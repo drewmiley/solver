@@ -73,6 +73,4 @@ object Countdown {
     }
     recurse(state)
   }
-
-  def formPrintableSolutions(solutions: List[Calculation]): List[String] = solutions.map(_.representation.mkString("Solved | ", ", ", ""))
 }

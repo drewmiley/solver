@@ -4,6 +4,8 @@ object Main {
 
   private def printValue(name: String, output: String): Unit = println(s"$name | $output")
 
+  private def formPrintableSolutions(solutions: List[Calculation]): List[String] = solutions.map(_.representation.mkString("Solved | ", ", ", ""))
+
   def main(args: Array[String]): Unit = {
     val argsList = args.toList
 
@@ -16,7 +18,8 @@ object Main {
 //    TODO: Temp for local testing of remove duplicates
 //    val solutions: List[Calculation] = findSolutions(picked, smallRandom, largeRandom, target, filterDuplicate)
     val solutions: List[Calculation] = findSolutions(Some(List(1,2,3,4,6,20)), smallRandom, largeRandom, Some(179), filterDuplicate)
-    Countdown.formPrintableSolutions(solutions).foreach(println)
+    solutions.map(_.representation.mkString(", ")).foreach(printValue("Solved", _))
+//    formPrintableSolutions(solutions).foreach(println)
   }
 
   private def getConfigBoolFromArgs(args: List[String], argKey: String): Option[Boolean] = {
