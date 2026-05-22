@@ -10,6 +10,27 @@ case class State(currentResult: List[Calculation], solutions: List[Calculation] 
 
 object Countdown {
 
+  def generateIndexPairs(listSize: Int): List[(Int, Int)] = {
+    (0 until listSize).flatMap(i => (i + 1 until listSize).map(j => (i, j))).toList
+  }
+
+  private val indexPairsListSize2 = generateIndexPairs(2)
+  private val indexPairsListSize3 = generateIndexPairs(3)
+  private val indexPairsListSize4 = generateIndexPairs(4)
+  private val indexPairsListSize5 = generateIndexPairs(5)
+  private val indexPairsListSize6 = generateIndexPairs(6)
+
+  private def getIndexPairs(listSize: Int): List[(Int, Int)] = {
+    listSize match {
+      case 2 => indexPairsListSize2
+      case 3 => indexPairsListSize3
+      case 4 => indexPairsListSize4
+      case 5 => indexPairsListSize5
+      case 6 => indexPairsListSize6
+      case _ => generateIndexPairs(listSize)
+    }
+  }
+
   def applyOperatorsToIntegerPair(min: Int, max: Int): List[Operation] = {
     List(
       Operation(min + max, s"$min + $max = ${ min + max }"),
@@ -18,10 +39,6 @@ object Countdown {
       Operation(max.toFloat / min, s"$max / $min = ${ max / min }")
     ).filter(operation => operation.value > 0 && operation.value % 1 == 0 &&
       operation.value != min && operation.value != max)
-  }
-
-  def generateIndexPairs(listSize: Int): List[(Int, Int)] = {
-    (0 until listSize).flatMap(i => (i + 1 until listSize).map(j => (i, j))).toList
   }
 
   def operateOnIntegerPairAndCreateNewLists(numberList: Calculation, indexPair: (Int, Int)): List[Calculation] = {
@@ -39,7 +56,7 @@ object Countdown {
   def performOneOperationOnCurrentLists(listOfNumberLists: List[Calculation]): List[Calculation] =
     listOfNumberLists
       .flatMap(numberList =>
-        generateIndexPairs(numberList.values.size)
+        getIndexPairs(numberList.values.size)
           .flatMap(operateOnIntegerPairAndCreateNewLists(numberList, _))
       )
 

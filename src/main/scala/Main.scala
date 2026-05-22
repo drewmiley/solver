@@ -5,7 +5,7 @@ import Util._
 
 object Main {
 
-  private val IS_DEMO = true
+  private val IS_DEMO = false
 
   def main(args: Array[String]): Unit = {
     val argsList = args.toList
