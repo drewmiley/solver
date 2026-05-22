@@ -89,4 +89,34 @@ class CountdownSpec extends FlatSpec with BeforeAndAfterEach {
           .map(list => list.values.size).toSet == Set(size - 1))
       }))
   }
+
+  "filterDuplicateCalculations" should "filter to one Calculation per distinct set of values" in {
+    (2 to 6).foreach(size =>
+      (1 to 100).foreach(_ => {
+        val generatedList = (1 to 100).toList.map(_ => generateSortedIntList(size))
+//        TODO: Write correct assertion
+//        assert(Countdown.performOneOperationOnCurrentLists(generatedList.map(Calculation(_)))
+//          .map(list => list.values.size).toSet == Set(size - 1))
+      }))
+  }
+
+  "getNewState" should "return a State where the for values in the list, the size is 1 less than for the State passed in" in {
+    (2 to 6).foreach(size =>
+      (1 to 100).foreach(_ => {
+        val generatedList = (1 to 100).toList.map(_ => generateSortedIntList(size))
+//        TODO: Write correct assertion
+//        assert(Countdown.performOneOperationOnCurrentLists(generatedList.map(Calculation(_)))
+//          .map(list => list.values.size).toSet == Set(size - 1))
+      }))
+  }
+
+  "getNewState" should "return a State where the size of solutions is greater than or equal to for the State passed in" in {
+    (2 to 6).foreach(size =>
+      (1 to 100).foreach(_ => {
+        val generatedList = (1 to 100).toList.map(_ => generateSortedIntList(size))
+//        TODO: Write correct assertion
+//        assert(Countdown.performOneOperationOnCurrentLists(generatedList.map(Calculation(_)))
+//          .map(list => list.values.size).toSet == Set(size - 1))
+      }))
+  }
 }
