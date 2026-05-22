@@ -13,11 +13,8 @@ object Main {
     val target : Option[Int] = getConfigIntFromArgs(argsList, "target")
     val filterDuplicate: Boolean = getConfigBoolFromArgs(argsList, "filterDuplicate").getOrElse(true)
 
-//    TODO: Temp for local testing of remove duplicates
-//    val solutions: List[Calculation] = findSolutions(picked, smallRandom, largeRandom, target, filterDuplicate)
-    val solutions: List[Calculation] = findSolutions(Some(List(1,2,3,4,6,20)), smallRandom, largeRandom, Some(179), filterDuplicate)
+    val solutions: List[Calculation] = findSolutions(picked, smallRandom, largeRandom, target, filterDuplicate)
     solutions.map(_.representation.mkString(", ")).foreach(printValue("Solved", _))
-//    formPrintableSolutions(solutions).foreach(println)
   }
 
   private def findSolutions(picked: Option[List[Int]] = None,
