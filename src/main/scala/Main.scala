@@ -1,6 +1,9 @@
 package main
 
 object Main {
+
+  private def printValue(name: String, output: String): Unit = println(s"$name | $output")
+
   def main(args: Array[String]): Unit = {
     val argsList = args.toList
 
@@ -63,10 +66,10 @@ object Main {
     }
 
     val pickedNumbers = getPickedNumbers
-    println(pickedNumbers.mkString("Picked | ", ", ", ""))
+    printValue("Picked", pickedNumbers.mkString(", "))
 
     val targetNumber = getTargetNumber
-    println(s"Target | $targetNumber")
+    printValue("Target", targetNumber.toString)
 
     val solutions: List[Calculation] = Countdown.solve(pickedNumbers, targetNumber).solutions
     solutions
