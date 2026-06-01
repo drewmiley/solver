@@ -8,7 +8,9 @@ object Demo {
     val pickedNumbers = List(1, 2, 3, 4, 6, 20)
     val targetNumber = 179
 
+//    TODO: Annotate to help with complexity - top of the head says 1.5 to power n times n! squared - which seems high
     val initGetNewState: State => State = getNewState(targetNumber, filterDuplicate = true)
+//    val initGetNewState: State => State = getNewState(targetNumber, filterDuplicate = false)
 
     val stateStep0: State = State(List(Calculation(pickedNumbers)))
     // valuesLengthStep0 should be Set(6)
