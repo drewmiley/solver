@@ -15,6 +15,7 @@ object Main {
     val target : Option[Int] = getConfigIntFromArgs(argsList, "target")
     val filterDuplicate: Boolean = getConfigBoolFromArgs(argsList, "filterDuplicate").getOrElse(true)
     val displaySolutions: Boolean = getConfigBoolFromArgs(argsList, "displaySolutions").getOrElse(true)
+//    TODO: Adds noSolutions, targetMin, targetMax AND in README
     (sys.env.get("DEMO").contains("true"), getConfigBoolFromArgs(argsList, "noSolutions")) match {
       case (true, _) => runDemo()
       case (false, Some(true)) => {
