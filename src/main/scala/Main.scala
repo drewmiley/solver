@@ -12,7 +12,6 @@ object Main {
     val picked: Option[List[Int]] = getConfigIntListFromArgs(argsList, "picked")
     val smallRandom: Option[Int] = getConfigIntFromArgs(argsList, "smallRandom")
     val largeRandom: Option[Int] = getConfigIntFromArgs(argsList, "largeRandom")
-//    TODO: Adds noSolutions, targetMin, targetMax in README
     (sys.env.get("DEMO").contains("true"), getConfigBoolFromArgs(argsList, "noSolutions")) match {
       case (true, _) => runDemo()
       case (false, Some(true)) =>
