@@ -18,20 +18,18 @@ object Main {
 //    TODO: Adds noSolutions, targetMin, targetMax AND in README
     (sys.env.get("DEMO").contains("true"), getConfigBoolFromArgs(argsList, "noSolutions")) match {
       case (true, _) => runDemo()
-      case (false, Some(true)) => {
+      case (false, Some(true)) =>
         val pickedNumbers = getPickedNumbers(picked, smallRandom, largeRandom)
         val targetMin = None
         val targetMax = None
         val noSolutionsFor: List[Int] = findNoSolutions(pickedNumbers, targetMin, targetMax)
         printValue("No Solutions for", noSolutionsFor.mkString(", "))
-      }
-      case (false, _) => {
+      case (false, _) =>
         val pickedNumbers = getPickedNumbers(picked, smallRandom, largeRandom)
         val solutions: List[Calculation] = findSolutions(pickedNumbers, target, filterDuplicate)
         val solutionsDisplayText = if (filterDuplicate) "No. Solutions (Distinct)" else "No. Solutions (inc. duplicate)"
         printValue(solutionsDisplayText, solutions.length.toString)
         if (displaySolutions) solutions.map(_.representation.mkString(", ")).foreach(printValue("Solved", _))
-      }
     }
   }
 
