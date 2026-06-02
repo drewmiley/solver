@@ -12,19 +12,19 @@ object Main {
     val picked: Option[List[Int]] = getConfigIntListFromArgs(argsList, "picked")
     val smallRandom: Option[Int] = getConfigIntFromArgs(argsList, "smallRandom")
     val largeRandom: Option[Int] = getConfigIntFromArgs(argsList, "largeRandom")
-    val target : Option[Int] = getConfigIntFromArgs(argsList, "target")
-    val filterDuplicate: Boolean = getConfigBoolFromArgs(argsList, "filterDuplicate").getOrElse(true)
-    val displaySolutions: Boolean = getConfigBoolFromArgs(argsList, "displaySolutions").getOrElse(true)
-//    TODO: Adds noSolutions, targetMin, targetMax AND in README
+//    TODO: Adds noSolutions, targetMin, targetMax in README
     (sys.env.get("DEMO").contains("true"), getConfigBoolFromArgs(argsList, "noSolutions")) match {
       case (true, _) => runDemo()
       case (false, Some(true)) =>
         val pickedNumbers = getPickedNumbers(picked, smallRandom, largeRandom)
-        val targetMin = None
-        val targetMax = None
+        val targetMin: Option[Int] = getConfigIntFromArgs(argsList, "targetMin")
+        val targetMax: Option[Int] = getConfigIntFromArgs(argsList, "targetMax")
         val noSolutionsFor: List[Int] = findNoSolutions(pickedNumbers, targetMin, targetMax)
         printValue("No Solutions for", noSolutionsFor.mkString(", "))
       case (false, _) =>
+        val target : Option[Int] = getConfigIntFromArgs(argsList, "target")
+        val filterDuplicate: Boolean = getConfigBoolFromArgs(argsList, "filterDuplicate").getOrElse(true)
+        val displaySolutions: Boolean = getConfigBoolFromArgs(argsList, "displaySolutions").getOrElse(true)
         val pickedNumbers = getPickedNumbers(picked, smallRandom, largeRandom)
         val solutions: List[Calculation] = findSolutions(pickedNumbers, target, filterDuplicate)
         val solutionsDisplayText = if (filterDuplicate) "No. Solutions (Distinct)" else "No. Solutions (inc. duplicate)"
