@@ -4,43 +4,50 @@ import Countdown.getNewState
 
 object Demo {
 
+  private def initPrintStateStepInfo(pickedNumbersLength: Int)(stateAtStep: State, stepNumber: Int): Unit = {
+      println("---------------")
+      println(s"STEP $stepNumber DONE")
+      println(s"stateStep$stepNumber has currentResult size ${stateAtStep.currentResult.length}")
+      println(s"stateStep$stepNumber has solutions size ${stateAtStep.solutions.length}")
+      val valuesLengthAtStep: Set[Int] = stateAtStep.currentResult.map(_.values).map(_.size).toSet
+      println(s"valuesLengthStep$stepNumber should be Set(${pickedNumbersLength - stepNumber})")
+      println(s"valuesLengthStep$stepNumber is $valuesLengthAtStep")
+  }
+
   def runDemo(): Unit = {
     val pickedNumbers = List(1, 2, 3, 4, 6, 20)
     val targetNumber = 179
+//    val filterDuplicate = true
+    val filterDuplicate = false
 
-    val initGetNewState: State => State = getNewState(targetNumber, filterDuplicate = true)
+//    NOTE: Top of the head says complexity 1.5 to power n times n! squared - this is high!!! (for filterDuplicate false)
+    val initGetNewState: State => State = getNewState(targetNumber, filterDuplicate = filterDuplicate)
+    println(s"Picked | ${pickedNumbers.mkString(", ")}")
+    println(s"Target | $targetNumber")
+    println(s"filterDuplicate | $filterDuplicate")
+
+    val printStateStepInfo: (State, Int) => Unit = initPrintStateStepInfo(pickedNumbers.length)
 
     val stateStep0: State = State(List(Calculation(pickedNumbers)))
-    // valuesLengthStep0 should be Set(6)
-    val valuesLengthStep0: Set[Int] = stateStep0.currentResult.map(_.values).map(_.size).toSet
-    println("STEP 0 DONE")
+    printStateStepInfo(stateStep0, 0)
 
     val stateStep1: State = initGetNewState(stateStep0)
-    // valuesLengthStep1 should be Set(5)
-    val valuesLengthStep1: Set[Int] = stateStep1.currentResult.map(_.values).map(_.size).toSet
-    println("STEP 1 DONE")
+    printStateStepInfo(stateStep1, 1)
 
     val stateStep2: State = initGetNewState(stateStep1)
-    // valuesLengthStep2 should be Set(4)
-    val valuesLengthStep2: Set[Int] = stateStep2.currentResult.map(_.values).map(_.size).toSet
-    println("STEP 2 DONE")
+    printStateStepInfo(stateStep2, 2)
 
     val stateStep3: State = initGetNewState(stateStep2)
-    // valuesLengthStep3 should be Set(3)
-    val valuesLengthStep3: Set[Int] = stateStep3.currentResult.map(_.values).map(_.size).toSet
-    println("STEP 3 DONE")
+    printStateStepInfo(stateStep3, 3)
 
     val stateStep4: State = initGetNewState(stateStep3)
-    // valuesLengthStep4 should be Set(2)
-    val valuesLengthStep4: Set[Int] = stateStep4.currentResult.map(_.values).map(_.size).toSet
-    println("STEP 4 DONE")
+    printStateStepInfo(stateStep4, 4)
 
     val stateStep5: State = initGetNewState(stateStep4)
-    // valuesLengthStep5 should be Set(1)
-    val valuesLengthStep5: Set[Int] = stateStep5.currentResult.map(_.values).map(_.size).toSet
-    println("STEP 5 DONE")
+    printStateStepInfo(stateStep5, 5)
 
     val solutions = stateStep5.solutions
+    println("---------------")
     println("SOLUTIONS FOUND")
   }
 
