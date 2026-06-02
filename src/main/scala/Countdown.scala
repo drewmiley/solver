@@ -89,4 +89,34 @@ object Countdown {
     }
     recurse(state)
   }
+
+  private def getNewStateSolvingForEveryNumber(targetRange: Range)(state: State): State = {
+    //    TODO: Implement this function
+//    LINE IS FINE
+    val calculatedValues: List[Calculation] = performOneOperationOnCurrentLists(state.currentResult)
+//    LINE IS FINE
+    val currentCalculationsWithFilteredDuplicate: List[Calculation] = filterDuplicateCalculations(calculatedValues)
+//    THIS IS ONE THAT NEEDS TO BE UPDATED
+    val calculationsSplitByIfTarget: Map[Boolean, List[Calculation]] =
+      currentCalculationsWithFilteredDuplicate.groupBy(_.values.contains(targetRange.head))
+//      KEEP ALL
+    val currentResult = calculationsSplitByIfTarget.getOrElse(false, List.empty)
+//    I THINK PROBABLY FINE
+    val solutions = filterDuplicateSolutions(state.solutions, calculationsSplitByIfTarget.getOrElse(true, List.empty))
+    val newState = State(currentResult, solutions)
+    newState
+  }
+
+  def solveForEveryNumber(picked: List[Int], targetRange: Range): State = {
+    val state: State = State(List(Calculation(picked)))
+    val initGetNewState: State => State = getNewStateSolvingForEveryNumber(targetRange)
+    @tailrec
+    def recurse(state: State): State = if (state.currentResult.map(_.values).exists(_.size > 1)) {
+      val newState = initGetNewState(state)
+      recurse(newState)
+    } else {
+      state
+    }
+    recurse(state)
+  }
 }
