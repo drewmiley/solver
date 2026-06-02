@@ -13,31 +13,43 @@ object Demo {
 //    val initGetNewState: State => State = getNewState(targetNumber, filterDuplicate = false)
 
     val stateStep0: State = State(List(Calculation(pickedNumbers)))
+    // filterDuplicate true stateStepO has currentResult size 0, solutions size 0
+    // filterDuplicate false stateStepO has currentResult size 0, solutions size 0
     // valuesLengthStep0 should be Set(6)
     val valuesLengthStep0: Set[Int] = stateStep0.currentResult.map(_.values).map(_.size).toSet
     println("STEP 0 DONE")
 
     val stateStep1: State = initGetNewState(stateStep0)
+    // filterDuplicate true stateStep1 has currentResult size 0, solutions size 0
+    // filterDuplicate false stateStep1 has currentResult size 0, solutions size 0
     // valuesLengthStep1 should be Set(5)
     val valuesLengthStep1: Set[Int] = stateStep1.currentResult.map(_.values).map(_.size).toSet
     println("STEP 1 DONE")
 
     val stateStep2: State = initGetNewState(stateStep1)
+    // filterDuplicate true stateStep2 has currentResult size 0, solutions size 0
+    // filterDuplicate false stateStep2 has currentResult size 0, solutions size 0
     // valuesLengthStep2 should be Set(4)
     val valuesLengthStep2: Set[Int] = stateStep2.currentResult.map(_.values).map(_.size).toSet
     println("STEP 2 DONE")
 
     val stateStep3: State = initGetNewState(stateStep2)
+    // filterDuplicate true stateStep3 has currentResult size 0, solutions size 0
+    // filterDuplicate false stateStep3 has currentResult size 0, solutions size 0
     // valuesLengthStep3 should be Set(3)
     val valuesLengthStep3: Set[Int] = stateStep3.currentResult.map(_.values).map(_.size).toSet
     println("STEP 3 DONE")
 
     val stateStep4: State = initGetNewState(stateStep3)
+    // filterDuplicate true stateStep4 has currentResult size 0, solutions size 0
+    // filterDuplicate false stateStep4 has currentResult size 0, solutions size 0
     // valuesLengthStep4 should be Set(2)
     val valuesLengthStep4: Set[Int] = stateStep4.currentResult.map(_.values).map(_.size).toSet
     println("STEP 4 DONE")
 
     val stateStep5: State = initGetNewState(stateStep4)
+    // filterDuplicate true stateStep5 has currentResult size 0, solutions size 0
+    // filterDuplicate false stateStep5 has currentResult size 0, solutions size 0
     // valuesLengthStep5 should be Set(1)
     val valuesLengthStep5: Set[Int] = stateStep5.currentResult.map(_.values).map(_.size).toSet
     println("STEP 5 DONE")
