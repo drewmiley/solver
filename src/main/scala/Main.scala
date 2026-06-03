@@ -52,9 +52,16 @@ object Main {
   private def findNoSolutions(pickedNumbers: List[Int],
                               targetMin: Option[Int] = None,
                               targetMax: Option[Int] = None): List[Int] = {
-    val targetRange = targetMin.getOrElse(101) to targetMax.getOrElse(999)
-    val solutions: List[Calculation] = solveForEveryNumber(pickedNumbers, targetRange).solutions
-    List.empty
+    printValue("Picked", pickedNumbers.mkString(", "))
+
+    val targetRangeLower = targetMin.getOrElse(101)
+    val targetRangeHigher = targetMax.getOrElse(999)
+    val targetRange = targetRangeLower to targetRangeHigher
+    printValue("Target Min", targetRangeLower.toString)
+    printValue("Target Max", targetRangeHigher.toString)
+
+    val numbersLeftToSolve: List[Int] = solveForEveryNumber(pickedNumbers, targetRange).numbersLeftToSolve
+    numbersLeftToSolve
   }
 
   private def findSolutions(pickedNumbers: List[Int],

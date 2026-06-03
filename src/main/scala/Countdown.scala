@@ -65,7 +65,7 @@ object Countdown {
     solutions ++ validNewSolutions
   }
 
-  def getNewState(target: Int, filterDuplicate: Boolean)(state: State): State = {
+  def getNewState(target: Int, filterDuplicate: Boolean)(state: SolutionsState): SolutionsState = {
     val calculatedValues: List[Calculation] = performOneOperationOnCurrentLists(state.currentResult)
     val currentCalculationsWithFilteredDuplicate: List[Calculation] =
       if (filterDuplicate) filterDuplicateCalculations(calculatedValues) else calculatedValues
@@ -73,15 +73,15 @@ object Countdown {
       currentCalculationsWithFilteredDuplicate.groupBy(_.values.contains(target))
     val currentResult = calculationsSplitByIfTarget.getOrElse(false, List.empty)
     val solutions = filterDuplicateSolutions(state.solutions, calculationsSplitByIfTarget.getOrElse(true, List.empty))
-    val newState = State(currentResult, solutions)
+    val newState = SolutionsState(currentResult, solutions)
     newState
   }
 
-  def solve(picked: List[Int], target: Int, filterDuplicate: Boolean): State = {
-    val state: State = State(List(Calculation(picked)))
-    val initGetNewState: State => State = getNewState(target, filterDuplicate)
+  def solve(picked: List[Int], target: Int, filterDuplicate: Boolean): SolutionsState = {
+    val state: SolutionsState = SolutionsState(List(Calculation(picked)))
+    val initGetNewState: SolutionsState => SolutionsState = getNewState(target, filterDuplicate)
     @tailrec
-    def recurse(state: State): State = if (state.currentResult.map(_.values).exists(_.size > 1)) {
+    def recurse(state: SolutionsState): SolutionsState = if (state.currentResult.map(_.values).exists(_.size > 1)) {
       val newState = initGetNewState(state)
       recurse(newState)
     } else {
@@ -90,29 +90,22 @@ object Countdown {
     recurse(state)
   }
 
-  private def getNewStateSolvingForEveryNumber(targetRange: Range)(state: State): State = {
-    //    TODO: Implement this function
-//    LINE IS FINE
+  private def getNewStateSolvingForEveryNumber(state: NoSolutionsState): NoSolutionsState = {
     val calculatedValues: List[Calculation] = performOneOperationOnCurrentLists(state.currentResult)
-//    LINE IS FINE
     val currentCalculationsWithFilteredDuplicate: List[Calculation] = filterDuplicateCalculations(calculatedValues)
-//    THIS IS ONE THAT NEEDS TO BE UPDATED
-    val calculationsSplitByIfTarget: Map[Boolean, List[Calculation]] =
-      currentCalculationsWithFilteredDuplicate.groupBy(_.values.contains(targetRange.head))
-//      KEEP ALL
-    val currentResult = calculationsSplitByIfTarget.getOrElse(false, List.empty)
-//    I THINK PROBABLY FINE
-    val solutions = filterDuplicateSolutions(state.solutions, calculationsSplitByIfTarget.getOrElse(true, List.empty))
-    val newState = State(currentResult, solutions)
+
+    val solvedNumbers: List[Int] = currentCalculationsWithFilteredDuplicate.flatMap(_.values).distinct
+    val newNumbersLeftToSolve: List[Int] = state.numbersLeftToSolve diff solvedNumbers
+
+    val newState = NoSolutionsState(currentCalculationsWithFilteredDuplicate, newNumbersLeftToSolve)
     newState
   }
 
-  def solveForEveryNumber(picked: List[Int], targetRange: Range): State = {
-    val state: State = State(List(Calculation(picked)))
-    val initGetNewState: State => State = getNewStateSolvingForEveryNumber(targetRange)
+  def solveForEveryNumber(picked: List[Int], targetRange: Range): NoSolutionsState = {
+    val state: NoSolutionsState = NoSolutionsState(List(Calculation(picked)), targetRange.toList)
     @tailrec
-    def recurse(state: State): State = if (state.currentResult.map(_.values).exists(_.size > 1)) {
-      val newState = initGetNewState(state)
+    def recurse(state: NoSolutionsState): NoSolutionsState = if (state.currentResult.map(_.values).exists(_.size > 1)) {
+      val newState = getNewStateSolvingForEveryNumber(state)
       recurse(newState)
     } else {
       state
