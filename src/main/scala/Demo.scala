@@ -1,6 +1,6 @@
 package main
 
-import Countdown.getNewState
+import CountdownSolutions.getNewState
 
 object Demo {
 

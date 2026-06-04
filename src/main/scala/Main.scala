@@ -1,6 +1,7 @@
 package main
 
-import Countdown._
+import CountdownSolutions._
+import CountdownNoSolutions._
 import Demo.runDemo
 import Util._
 

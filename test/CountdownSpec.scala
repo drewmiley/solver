@@ -1,6 +1,7 @@
 package main
 
-import Countdown._
+import CountdownSolutions._
+import Operations._
 import org.scalatest._
 
 class CountdownSpec extends FlatSpec with BeforeAndAfterEach {
