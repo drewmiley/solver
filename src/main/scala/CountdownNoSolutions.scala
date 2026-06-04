@@ -6,8 +6,7 @@ import scala.annotation.tailrec
 
 object CountdownNoSolutions {
 
-//  TODO: Add unit tests
-  private def getNewStateSolvingForEveryNumber(state: NoSolutionsState): NoSolutionsState = {
+  def getNewStateSolvingForEveryNumber(state: NoSolutionsState): NoSolutionsState = {
     val calculatedValues: List[Calculation] = performOneOperationOnCurrentLists(state.currentResult)
     val currentCalculationsWithFilteredDuplicate: List[Calculation] = filterDuplicateCalculations(calculatedValues)
 

@@ -1,6 +1,7 @@
 package main
 
 import CountdownSolutions._
+import CountdownNoSolutions._
 import Operations._
 import org.scalatest._
 
@@ -141,6 +142,45 @@ class CountdownSpec extends FlatSpec with BeforeAndAfterEach {
           (1 until size).foreach(stepNo => {
             val newState: SolutionsState = initGetNewState(state)
             assert(newState.solutions.length >= state.solutions.length)
+            state = newState
+          })
+        })
+      }))
+  }
+
+  "getNewStateSolvingForEveryNumber" should "return a State where for values in the list, the size is 1 less than for the State passed in" in {
+    (2 to 6).foreach(size =>
+      (1 to 2).foreach(_ => {
+        val generatedList = (1 to 100).toList.map(_ => generateSortedIntList(size))
+        val targetRange = 101 to 999
+        generatedList.foreach(picked => {
+          val initState: NoSolutionsState = NoSolutionsState(List(Calculation(picked)), targetRange.toList)
+          var state: NoSolutionsState = initState
+          (1 until size).foreach(stepNo => {
+            val newState: NoSolutionsState = getNewStateSolvingForEveryNumber(state)
+            val stateValuesLength = state.currentResult.map(_.values.length).toSet
+            val newStateValuesLength = newState.currentResult.map(_.values.length).toSet
+            assert(stateValuesLength.size == 1)
+            assert(newStateValuesLength.size == 1)
+            assert(stateValuesLength.head == size + 1 - stepNo)
+            assert(newStateValuesLength.head + 1 == size + 1 - stepNo)
+            state = newState
+          })
+        })
+      }))
+  }
+
+  "getNewStateSolvingForEveryNumber" should "return a State where the size of numbersLeftToSolve is less than or equal to for the State passed in" in {
+    (2 to 6).foreach(size =>
+      (1 to 2).foreach(_ => {
+        val generatedList = (1 to 100).toList.map(_ => generateSortedIntList(size))
+        val targetRange = 101 to 999
+        generatedList.foreach(picked => {
+          val initState: NoSolutionsState = NoSolutionsState(List(Calculation(picked)), targetRange.toList)
+          var state: NoSolutionsState = initState
+          (1 until size).foreach(stepNo => {
+            val newState: NoSolutionsState = getNewStateSolvingForEveryNumber(state)
+            assert(newState.numbersLeftToSolve.length <= state.numbersLeftToSolve.length)
             state = newState
           })
         })
