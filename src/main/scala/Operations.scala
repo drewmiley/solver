@@ -22,7 +22,6 @@ object Operations {
     }
   }
 
-//  TODO: Add caching for simple examples
   def applyOperatorsToIntegerPair(min: Int, max: Int): List[Operation] = {
     List(
       AdditionOperation(min, max),
