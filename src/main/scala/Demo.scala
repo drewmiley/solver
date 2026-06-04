@@ -4,7 +4,7 @@ import Countdown.getNewState
 
 object Demo {
 
-  private def initPrintStateStepInfo(pickedNumbersLength: Int)(stateAtStep: State, stepNumber: Int): Unit = {
+  private def initPrintStateStepInfo(pickedNumbersLength: Int)(stateAtStep: SolutionsState, stepNumber: Int): Unit = {
       println("---------------")
       println(s"STEP $stepNumber DONE")
       println(s"stateStep$stepNumber has currentResult size ${stateAtStep.currentResult.length}")
@@ -21,29 +21,29 @@ object Demo {
     val filterDuplicate = false
 
 //    NOTE: Top of the head says complexity 1.5 to power n times n! squared - this is high!!! (for filterDuplicate false)
-    val initGetNewState: State => State = getNewState(targetNumber, filterDuplicate = filterDuplicate)
+    val initGetNewState: SolutionsState => SolutionsState = getNewState(targetNumber, filterDuplicate = filterDuplicate)
     println(s"Picked | ${pickedNumbers.mkString(", ")}")
     println(s"Target | $targetNumber")
     println(s"filterDuplicate | $filterDuplicate")
 
-    val printStateStepInfo: (State, Int) => Unit = initPrintStateStepInfo(pickedNumbers.length)
+    val printStateStepInfo: (SolutionsState, Int) => Unit = initPrintStateStepInfo(pickedNumbers.length)
 
-    val stateStep0: State = State(List(Calculation(pickedNumbers)))
+    val stateStep0: SolutionsState = SolutionsState(List(Calculation(pickedNumbers)))
     printStateStepInfo(stateStep0, 0)
 
-    val stateStep1: State = initGetNewState(stateStep0)
+    val stateStep1: SolutionsState = initGetNewState(stateStep0)
     printStateStepInfo(stateStep1, 1)
 
-    val stateStep2: State = initGetNewState(stateStep1)
+    val stateStep2: SolutionsState = initGetNewState(stateStep1)
     printStateStepInfo(stateStep2, 2)
 
-    val stateStep3: State = initGetNewState(stateStep2)
+    val stateStep3: SolutionsState = initGetNewState(stateStep2)
     printStateStepInfo(stateStep3, 3)
 
-    val stateStep4: State = initGetNewState(stateStep3)
+    val stateStep4: SolutionsState = initGetNewState(stateStep3)
     printStateStepInfo(stateStep4, 4)
 
-    val stateStep5: State = initGetNewState(stateStep4)
+    val stateStep5: SolutionsState = initGetNewState(stateStep4)
     printStateStepInfo(stateStep5, 5)
 
     val solutions = stateStep5.solutions

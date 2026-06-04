@@ -97,7 +97,7 @@ class CountdownSpec extends FlatSpec with BeforeAndAfterEach {
         val generatedList = (1 to 100).toList.map(_ => generateSortedIntList(size))
         val target = new NumberPicker((1 to 100).toList).select(1).head
         generatedList.foreach(picked => {
-          val state: State = State(List(Calculation(picked)))
+          val state: SolutionsState = SolutionsState(List(Calculation(picked)))
           val newState = getNewState(target, filterDuplicate = false)(state)
           val newCalculations = newState.currentResult
           assert(filterDuplicateCalculations(newCalculations).length == newCalculations.groupBy(_.values).values.flatten.toList.length)
@@ -110,12 +110,12 @@ class CountdownSpec extends FlatSpec with BeforeAndAfterEach {
       (1 to 2).foreach(_ => {
         val generatedList = (1 to 100).toList.map(_ => generateSortedIntList(size))
         val target = new NumberPicker((1 to 100).toList).select(1).head
-        val initGetNewState: State => State = getNewState(target, filterDuplicate = true)
+        val initGetNewState: SolutionsState => SolutionsState = getNewState(target, filterDuplicate = true)
         generatedList.foreach(picked => {
-          val initState: State = State(List(Calculation(picked)))
-          var state: State = initState
+          val initState: SolutionsState = SolutionsState(List(Calculation(picked)))
+          var state: SolutionsState = initState
           (1 until size).foreach(stepNo => {
-            val newState: State = initGetNewState(state)
+            val newState: SolutionsState = initGetNewState(state)
             val stateValuesLength = state.currentResult.map(_.values.length).toSet
             val newStateValuesLength = newState.currentResult.map(_.values.length).toSet
             assert(stateValuesLength.size == 1)
@@ -133,12 +133,12 @@ class CountdownSpec extends FlatSpec with BeforeAndAfterEach {
       (1 to 2).foreach(_ => {
         val generatedList = (1 to 100).toList.map(_ => generateSortedIntList(size))
         val target = new NumberPicker((1 to 100).toList).select(1).head
-        val initGetNewState: State => State = getNewState(target, filterDuplicate = true)
+        val initGetNewState: SolutionsState => SolutionsState = getNewState(target, filterDuplicate = true)
         generatedList.foreach(picked => {
-          val initState: State = State(List(Calculation(picked)))
-          var state: State = initState
+          val initState: SolutionsState = SolutionsState(List(Calculation(picked)))
+          var state: SolutionsState = initState
           (1 until size).foreach(stepNo => {
-            val newState: State = initGetNewState(state)
+            val newState: SolutionsState = initGetNewState(state)
             assert(newState.solutions.length >= state.solutions.length)
             state = newState
           })
