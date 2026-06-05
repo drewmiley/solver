@@ -22,6 +22,15 @@ object Operations {
     }
   }
 
+  private val commonNumbersList: List[Int] = List(1,2,3,4,5,6,10,100)
+  private val indexPairsForCommonNumbersList: List[(Int, Int)] = getIndexPairs(commonNumbersList.length)
+//  TODO: This should be Map[(Int, Int), List[Operation]]
+  private val operationsOnCommonNumbersList: List[((Int, Int), List[Operation])] = indexPairsForCommonNumbersList.map(indexPair => {
+    val min = commonNumbersList(indexPair._1)
+    val max = commonNumbersList(indexPair._2)
+    ((min, max), applyOperatorsToIntegerPair(min, max))
+  })
+
   def applyOperatorsToIntegerPair(min: Int, max: Int): List[Operation] = {
     List(
       AdditionOperation(min, max),
@@ -32,11 +41,18 @@ object Operations {
       operation.value != min && operation.value != max)
   }
 
+  private def applyOperatorsToIntegerPairWithCache(min: Int, max: Int): List[Operation] = {
+    val cacheValue: Option[List[Operation]] = operationsOnCommonNumbersList
+      .find(d => d._1._1 == min && d._1._2 == max)
+      .map(_._2)
+    cacheValue.getOrElse(applyOperatorsToIntegerPair(min, max))
+  }
+
   def operateOnIntegerPairAndCreateNewLists(numberList: Calculation, indexPair: (Int, Int)): List[Calculation] = {
     val min: Int = numberList.values(indexPair._1)
     val max: Int = numberList.values(indexPair._2)
     val listWithIndexPairRemoved: List[Int] = numberList.values diff List(min, max)
-    applyOperatorsToIntegerPair(min, max).map(operation =>
+    applyOperatorsToIntegerPairWithCache(min, max).map(operation =>
       Calculation(
         (listWithIndexPairRemoved :+ operation.value.toInt).sorted,
         numberList.representation :+ operation.representation
