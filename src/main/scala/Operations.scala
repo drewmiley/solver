@@ -26,11 +26,11 @@ object Operations {
 
   private val commonNumbersList: List[Int] = List(1,2,3,4,5,6,10,100)
   private val indexPairsForCommonNumbersList: List[(Int, Int)] = getIndexPairs(commonNumbersList.length)
-  private val operationsOnCommonNumbersMap: Map[(Int, Int), List[Operation]] = indexPairsForCommonNumbersList.map(indexPair => {
+  private var operationsOnCommonNumbersMap: collection.mutable.Map[(Int, Int), List[Operation]] = indexPairsForCommonNumbersList.map(indexPair => {
     val min = commonNumbersList(indexPair._1)
     val max = commonNumbersList(indexPair._2)
     (min, max) -> applyOperatorsToIntegerPair(min, max)
-  }).toMap.to(mutable.Map)
+  }).to(mutable.Map)
 
   def applyOperatorsToIntegerPair(min: Int, max: Int): List[Operation] = {
     List(
@@ -44,8 +44,11 @@ object Operations {
 
   private def applyOperatorsToIntegerPairWithCache(min: Int, max: Int): List[Operation] = {
     val cacheValue: Option[List[Operation]] = operationsOnCommonNumbersMap.get((min, max))
-//    TODO: Add calculated to cache
-    cacheValue.getOrElse(applyOperatorsToIntegerPair(min, max))
+    cacheValue.getOrElse({
+      val operatorsForIntegerPair = applyOperatorsToIntegerPair(min, max)
+      operationsOnCommonNumbersMap += (min, max) -> operatorsForIntegerPair
+      operatorsForIntegerPair
+    })
   }
 
   def operateOnIntegerPairAndCreateNewLists(numberList: Calculation, indexPair: (Int, Int)): List[Calculation] = {
