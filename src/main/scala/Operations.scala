@@ -1,5 +1,7 @@
 package main
 
+import scala.collection.mutable
+
 object Operations {
 
   def generateIndexPairs(listSize: Int): List[(Int, Int)] =
@@ -24,12 +26,11 @@ object Operations {
 
   private val commonNumbersList: List[Int] = List(1,2,3,4,5,6,10,100)
   private val indexPairsForCommonNumbersList: List[(Int, Int)] = getIndexPairs(commonNumbersList.length)
-//  TODO: This should be Map[(Int, Int), List[Operation]]
-  private val operationsOnCommonNumbersList: List[((Int, Int), List[Operation])] = indexPairsForCommonNumbersList.map(indexPair => {
+  private val operationsOnCommonNumbersMap: Map[(Int, Int), List[Operation]] = indexPairsForCommonNumbersList.map(indexPair => {
     val min = commonNumbersList(indexPair._1)
     val max = commonNumbersList(indexPair._2)
-    ((min, max), applyOperatorsToIntegerPair(min, max))
-  })
+    (min, max) -> applyOperatorsToIntegerPair(min, max)
+  }).toMap.to(mutable.Map)
 
   def applyOperatorsToIntegerPair(min: Int, max: Int): List[Operation] = {
     List(
@@ -42,9 +43,8 @@ object Operations {
   }
 
   private def applyOperatorsToIntegerPairWithCache(min: Int, max: Int): List[Operation] = {
-    val cacheValue: Option[List[Operation]] = operationsOnCommonNumbersList
-      .find(d => d._1._1 == min && d._1._2 == max)
-      .map(_._2)
+    val cacheValue: Option[List[Operation]] = operationsOnCommonNumbersMap.get((min, max))
+//    TODO: Add calculated to cache
     cacheValue.getOrElse(applyOperatorsToIntegerPair(min, max))
   }
 
