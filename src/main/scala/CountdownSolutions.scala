@@ -13,7 +13,7 @@ object CountdownSolutions {
     solutions ++ validNewSolutions
   }
 
-  def getNewState(target: Int, filterDuplicate: Boolean)(state: SolutionsState): SolutionsState = {
+  def initGetNewState(target: Int, filterDuplicate: Boolean)(state: SolutionsState): SolutionsState = {
     val calculatedValues: List[Calculation] = performOneOperationOnCurrentLists(state.currentResult)
     val currentCalculationsWithFilteredDuplicate: List[Calculation] =
       if (filterDuplicate) filterDuplicateCalculations(calculatedValues) else calculatedValues
@@ -27,10 +27,10 @@ object CountdownSolutions {
 
   def solve(picked: List[Int], target: Int, filterDuplicate: Boolean): SolutionsState = {
     val state: SolutionsState = SolutionsState(List(Calculation(picked)))
-    val initGetNewState: SolutionsState => SolutionsState = getNewState(target, filterDuplicate)
+    val getNewState: SolutionsState => SolutionsState = initGetNewState(target, filterDuplicate)
     @tailrec
     def recurse(state: SolutionsState): SolutionsState = if (state.currentResult.map(_.values).exists(_.size > 1)) {
-      val newState = initGetNewState(state)
+      val newState = getNewState(state)
       recurse(newState)
     } else {
       state
