@@ -13,18 +13,17 @@ object CountdownNoSolutions {
     val solvedNumbers: List[Int] = currentCalculationsWithFilteredDuplicate.flatMap(_.values).distinct
     val newNumbersLeftToSolve: List[Int] = state.numbersLeftToSolve diff solvedNumbers
 
-    val newState = NoSolutionsState(currentCalculationsWithFilteredDuplicate, newNumbersLeftToSolve)
-    newState
+    NoSolutionsState(currentCalculationsWithFilteredDuplicate, newNumbersLeftToSolve)
   }
 
   def solveForEveryNumber(picked: List[Int], targetRange: Range): NoSolutionsState = {
     val state: NoSolutionsState = NoSolutionsState(List(Calculation(picked)), targetRange.toList)
     @tailrec
-    def recurse(state: NoSolutionsState): NoSolutionsState = if (state.currentResult.map(_.values).exists(_.size > 1)) {
+    def recurse(state: NoSolutionsState): NoSolutionsState = if (state.currentResultValuesLengthIsOne) {
+      state
+    } else {
       val newState = getNewStateSolvingForEveryNumber(state)
       recurse(newState)
-    } else {
-      state
     }
     recurse(state)
   }
