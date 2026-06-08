@@ -27,6 +27,7 @@ case class DivideOperation(min: Int, max: Int) extends Operation {
   override def representation: String =  s"$max / $min = ${ max / min }"
 }
 
+// TODO: extends State (currentResult)
 case class SolutionsState(currentResult: List[Calculation], solutions: List[Calculation] = List.empty)
 
 case class NoSolutionsState(currentResult: List[Calculation], numbersLeftToSolve: List[Int])
