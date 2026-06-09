@@ -22,6 +22,8 @@ object CountdownSolutions {
     val calculationsSplitByIfTarget: Map[Boolean, List[Calculation]] =
       currentCalculationsWithFilteredDuplicate.groupBy(_.values.contains(target))
     val currentResult = calculationsSplitByIfTarget.getOrElse(false, List.empty)
+//    TODO: 3,7,9,250 is filtered to this solution - Calculation(List(3, 7, 9, 250),List(10 / 2 = 5, 5 * 50 = 250))
+//    TODO: Need to GROUP duplicate solutions instead (and take head at end)
     val solutions = filterDuplicateSolutions(state.solutions, calculationsSplitByIfTarget.getOrElse(true, List.empty))
 
     SolutionsState(currentResult, solutions)
@@ -30,6 +32,8 @@ object CountdownSolutions {
 //  TODO: 2,3,7,9,10,50 target 250
 //  TODO: Why is 50 / 2 = 25, 25 * 10 = 250 not a solution??
   def solveForSolutions(picked: List[Int], target: Int, filterDuplicate: Boolean): SolutionsState = {
+    val picked = List(2,3,7,9,10,50)
+    val target = 250
     val state: SolutionsState = SolutionsState(List(Calculation(picked)))
     val getNewState: SolutionsState => SolutionsState = initGetNewState(target, filterDuplicate)
     @tailrec
