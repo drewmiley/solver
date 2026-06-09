@@ -1,6 +1,7 @@
 package main
 
-import Countdown._
+import CountdownSolutions.initGetNewState
+import Operations._
 import org.scalatest._
 
 class CountdownSpec extends FlatSpec with BeforeAndAfterEach {
@@ -98,24 +99,24 @@ class CountdownSpec extends FlatSpec with BeforeAndAfterEach {
         val target = new NumberPicker((1 to 100).toList).select(1).head
         generatedList.foreach(picked => {
           val state: SolutionsState = SolutionsState(List(Calculation(picked)))
-          val newState = getNewState(target, filterDuplicate = false)(state)
+          val newState = initGetNewState(target, filterDuplicate = false)(state)
           val newCalculations = newState.currentResult
           assert(filterDuplicateCalculations(newCalculations).length == newCalculations.groupBy(_.values).values.flatten.toList.length)
         })
       }))
   }
 
-  "getNewState" should "return a State where for values in the list, the size is 1 less than for the State passed in" in {
+  "CountdownSolutions.getNewState" should "return a State where for values in the list, the size is 1 less than for the State passed in" in {
     (2 to 6).foreach(size =>
       (1 to 2).foreach(_ => {
         val generatedList = (1 to 100).toList.map(_ => generateSortedIntList(size))
         val target = new NumberPicker((1 to 100).toList).select(1).head
-        val initGetNewState: SolutionsState => SolutionsState = getNewState(target, filterDuplicate = true)
+        val getNewState: SolutionsState => SolutionsState = CountdownSolutions.initGetNewState(target, filterDuplicate = true)
         generatedList.foreach(picked => {
           val initState: SolutionsState = SolutionsState(List(Calculation(picked)))
           var state: SolutionsState = initState
           (1 until size).foreach(stepNo => {
-            val newState: SolutionsState = initGetNewState(state)
+            val newState: SolutionsState = getNewState(state)
             val stateValuesLength = state.currentResult.map(_.values.length).toSet
             val newStateValuesLength = newState.currentResult.map(_.values.length).toSet
             assert(stateValuesLength.size == 1)
@@ -128,18 +129,57 @@ class CountdownSpec extends FlatSpec with BeforeAndAfterEach {
       }))
   }
 
-  "getNewState" should "return a State where the size of solutions is greater than or equal to for the State passed in" in {
+  "CountdownSolutions.getNewState" should "return a State where the size of solutions is greater than or equal to for the State passed in" in {
     (2 to 6).foreach(size =>
       (1 to 2).foreach(_ => {
         val generatedList = (1 to 100).toList.map(_ => generateSortedIntList(size))
         val target = new NumberPicker((1 to 100).toList).select(1).head
-        val initGetNewState: SolutionsState => SolutionsState = getNewState(target, filterDuplicate = true)
+        val getNewState: SolutionsState => SolutionsState = CountdownSolutions.initGetNewState(target, filterDuplicate = true)
         generatedList.foreach(picked => {
           val initState: SolutionsState = SolutionsState(List(Calculation(picked)))
           var state: SolutionsState = initState
           (1 until size).foreach(stepNo => {
-            val newState: SolutionsState = initGetNewState(state)
+            val newState: SolutionsState = getNewState(state)
             assert(newState.solutions.length >= state.solutions.length)
+            state = newState
+          })
+        })
+      }))
+  }
+
+  "CountdownNoSolutions.getNewState" should "return a State where for values in the list, the size is 1 less than for the State passed in" in {
+    (2 to 6).foreach(size =>
+      (1 to 2).foreach(_ => {
+        val generatedList = (1 to 100).toList.map(_ => generateSortedIntList(size))
+        val targetRange = 101 to 999
+        generatedList.foreach(picked => {
+          val initState: NoSolutionsState = NoSolutionsState(List(Calculation(picked)), targetRange.toList)
+          var state: NoSolutionsState = initState
+          (1 until size).foreach(stepNo => {
+            val newState: NoSolutionsState = CountdownNoSolutions.getNewState(state)
+            val stateValuesLength = state.currentResult.map(_.values.length).toSet
+            val newStateValuesLength = newState.currentResult.map(_.values.length).toSet
+            assert(stateValuesLength.size == 1)
+            assert(newStateValuesLength.size == 1)
+            assert(stateValuesLength.head == size + 1 - stepNo)
+            assert(newStateValuesLength.head + 1 == size + 1 - stepNo)
+            state = newState
+          })
+        })
+      }))
+  }
+
+  "CountdownNoSolutions.getNewState" should "return a State where the size of numbersLeftToSolve is less than or equal to for the State passed in" in {
+    (2 to 6).foreach(size =>
+      (1 to 2).foreach(_ => {
+        val generatedList = (1 to 100).toList.map(_ => generateSortedIntList(size))
+        val targetRange = 101 to 999
+        generatedList.foreach(picked => {
+          val initState: NoSolutionsState = NoSolutionsState(List(Calculation(picked)), targetRange.toList)
+          var state: NoSolutionsState = initState
+          (1 until size).foreach(stepNo => {
+            val newState: NoSolutionsState = CountdownNoSolutions.getNewState(state)
+            assert(newState.numbersLeftToSolve.length <= state.numbersLeftToSolve.length)
             state = newState
           })
         })

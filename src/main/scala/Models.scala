@@ -27,6 +27,11 @@ case class DivideOperation(min: Int, max: Int) extends Operation {
   override def representation: String =  s"$max / $min = ${ max / min }"
 }
 
-case class SolutionsState(currentResult: List[Calculation], solutions: List[Calculation] = List.empty)
+abstract class State {
+  def currentResult: List[Calculation]
+  def currentResultValuesLengthIsOne: Boolean = currentResult.map(_.values).forall(_.length == 1)
+}
 
-case class NoSolutionsState(currentResult: List[Calculation], numbersLeftToSolve: List[Int])
+case class SolutionsState(currentResult: List[Calculation], solutions: List[Calculation] = List.empty) extends State
+
+case class NoSolutionsState(currentResult: List[Calculation], numbersLeftToSolve: List[Int]) extends State
