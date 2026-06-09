@@ -7,6 +7,7 @@ import scala.annotation.tailrec
 object CountdownSolutions {
 
   private def filterDuplicateSolutions(solutions: List[Calculation], newSolutions: List[Calculation]): List[Calculation] = {
+//    TODO: Look in here for why??
     val validNewSolutions = newSolutions.filter(newSolution => {
       !solutions.exists(solution => (solution.representation diff newSolution.representation).isEmpty)
     })
@@ -26,6 +27,8 @@ object CountdownSolutions {
     SolutionsState(currentResult, solutions)
   }
 
+//  TODO: 2,3,7,9,10,50 target 250
+//  TODO: Why is 50 / 2 = 25, 25 * 10 = 250 not a solution??
   def solveForSolutions(picked: List[Int], target: Int, filterDuplicate: Boolean): SolutionsState = {
     val state: SolutionsState = SolutionsState(List(Calculation(picked)))
     val getNewState: SolutionsState => SolutionsState = initGetNewState(target, filterDuplicate)
