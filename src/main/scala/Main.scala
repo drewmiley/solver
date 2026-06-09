@@ -1,7 +1,7 @@
 package main
 
-import CountdownSolutions._
-import CountdownNoSolutions._
+import CountdownSolutions.solveForSolutions
+import CountdownNoSolutions.solveForNoSolutions
 import Demo.runDemo
 import Util._
 
@@ -61,7 +61,7 @@ object Main {
     printValue("Target Min", targetRangeLower.toString)
     printValue("Target Max", targetRangeHigher.toString)
 
-    val numbersLeftToSolve: List[Int] = solveForEveryNumber(pickedNumbers, targetRange).numbersLeftToSolve
+    val numbersLeftToSolve: List[Int] = solveForNoSolutions(pickedNumbers, targetRange).numbersLeftToSolve
     numbersLeftToSolve
   }
 
@@ -83,7 +83,7 @@ object Main {
     val targetNumber = getTargetNumber
     printValue("Target", targetNumber.toString)
 
-    val solutions: List[Calculation] = solve(pickedNumbers, targetNumber, filterDuplicate).solutions
+    val solutions: List[Calculation] = solveForSolutions(pickedNumbers, targetNumber, filterDuplicate).solutions
     solutions
   }
 }

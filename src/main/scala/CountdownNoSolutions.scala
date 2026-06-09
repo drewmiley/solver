@@ -6,7 +6,7 @@ import scala.annotation.tailrec
 
 object CountdownNoSolutions {
 
-  def getNewStateSolvingForEveryNumber(state: NoSolutionsState): NoSolutionsState = {
+  def getNewState(state: NoSolutionsState): NoSolutionsState = {
     val calculatedValues: List[Calculation] = performOneOperationOnCurrentLists(state.currentResult)
     val currentCalculationsWithFilteredDuplicate: List[Calculation] = filterDuplicateCalculations(calculatedValues)
 
@@ -16,13 +16,13 @@ object CountdownNoSolutions {
     NoSolutionsState(currentCalculationsWithFilteredDuplicate, newNumbersLeftToSolve)
   }
 
-  def solveForEveryNumber(picked: List[Int], targetRange: Range): NoSolutionsState = {
+  def solveForNoSolutions(picked: List[Int], targetRange: Range): NoSolutionsState = {
     val state: NoSolutionsState = NoSolutionsState(List(Calculation(picked)), targetRange.toList)
     @tailrec
     def recurse(state: NoSolutionsState): NoSolutionsState = if (state.currentResultValuesLengthIsOne) {
       state
     } else {
-      val newState = getNewStateSolvingForEveryNumber(state)
+      val newState = getNewState(state)
       recurse(newState)
     }
     recurse(state)

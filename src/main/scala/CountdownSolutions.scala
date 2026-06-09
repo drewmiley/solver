@@ -26,7 +26,7 @@ object CountdownSolutions {
     SolutionsState(currentResult, solutions)
   }
 
-  def solve(picked: List[Int], target: Int, filterDuplicate: Boolean): SolutionsState = {
+  def solveForSolutions(picked: List[Int], target: Int, filterDuplicate: Boolean): SolutionsState = {
     val state: SolutionsState = SolutionsState(List(Calculation(picked)))
     val getNewState: SolutionsState => SolutionsState = initGetNewState(target, filterDuplicate)
     @tailrec
