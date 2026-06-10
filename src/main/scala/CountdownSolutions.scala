@@ -7,14 +7,14 @@ import scala.annotation.tailrec
 object CountdownSolutions {
 
   private def filterDuplicateSolutions(currentState: SolutionsState, newSolutions: List[Calculation]): List[Calculation] = {
-    val currentSolutions = currentState.solutions
     val currentSolutionsGroupedByValues = currentState.solutionsGroupedByValues
     //    TODO: 3,7,9,250 is filtered to this solution - Calculation(List(3, 7, 9, 250),List(10 / 2 = 5, 5 * 50 = 250))
     //    TODO: Need to GROUP duplicate solutions instead (and take head at end)
     val validNewSolutions = newSolutions.filter(newSolution => {
-      !currentSolutions.exists(solution => (solution.representation diff newSolution.representation).isEmpty)
+//      TODO: Need to correct this condition!!!
+      !currentSolutionsGroupedByValues.values.toList.flatten.exists(solution => (solution.representation diff newSolution.representation).isEmpty)
     })
-    currentSolutions ++ validNewSolutions
+    currentSolutionsGroupedByValues.values.toList.flatten ++ validNewSolutions
   }
 
   def initGetNewState(target: Int, filterDuplicate: Boolean)(state: SolutionsState): SolutionsState = {
