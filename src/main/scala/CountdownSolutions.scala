@@ -6,25 +6,27 @@ import scala.annotation.tailrec
 
 object CountdownSolutions {
 
-  private def filterDuplicateSolutions(solutions: List[Calculation], newSolutions: List[Calculation]): List[Calculation] = {
-//    TODO: Look in here for why??
+  private def filterDuplicateSolutions(currentState: SolutionsState, newSolutions: List[Calculation]): List[Calculation] = {
+    val currentSolutions = currentState.solutions
+    val currentSolutionsGroupedByValues = currentState.solutionsGroupedByValues
+    //    TODO: 3,7,9,250 is filtered to this solution - Calculation(List(3, 7, 9, 250),List(10 / 2 = 5, 5 * 50 = 250))
+    //    TODO: Need to GROUP duplicate solutions instead (and take head at end)
     val validNewSolutions = newSolutions.filter(newSolution => {
-      !solutions.exists(solution => (solution.representation diff newSolution.representation).isEmpty)
+      !currentSolutions.exists(solution => (solution.representation diff newSolution.representation).isEmpty)
     })
-    solutions ++ validNewSolutions
+    currentSolutions ++ validNewSolutions
   }
 
   def initGetNewState(target: Int, filterDuplicate: Boolean)(state: SolutionsState): SolutionsState = {
     val calculatedValues: List[Calculation] = performOneOperationOnCurrentLists(state.currentResult)
-    val currentCalculationsWithFilteredDuplicate: List[Calculation] =
-      if (filterDuplicate) filterDuplicateCalculations(calculatedValues) else calculatedValues
-
     val calculationsSplitByIfTarget: Map[Boolean, List[Calculation]] =
-      currentCalculationsWithFilteredDuplicate.groupBy(_.values.contains(target))
-    val currentResult = calculationsSplitByIfTarget.getOrElse(false, List.empty)
+      calculatedValues.groupBy(_.values.contains(target))
+    val calculationsNotTarget = calculationsSplitByIfTarget.getOrElse(false, List.empty)
+    val currentResult: List[Calculation] =
+      if (filterDuplicate) filterDuplicateCalculations(calculationsNotTarget) else calculationsNotTarget
 //    TODO: 3,7,9,250 is filtered to this solution - Calculation(List(3, 7, 9, 250),List(10 / 2 = 5, 5 * 50 = 250))
 //    TODO: Need to GROUP duplicate solutions instead (and take head at end)
-    val solutions = filterDuplicateSolutions(state.solutions, calculationsSplitByIfTarget.getOrElse(true, List.empty))
+    val solutions = filterDuplicateSolutions(state, calculationsSplitByIfTarget.getOrElse(true, List.empty))
 
     SolutionsState(currentResult, solutions)
   }
