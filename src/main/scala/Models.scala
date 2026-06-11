@@ -32,9 +32,8 @@ abstract class State {
   def currentResultValuesLengthIsOne: Boolean = currentResult.map(_.values).forall(_.length == 1)
 }
 
-case class SolutionsState(currentResult: List[Calculation], solutions: List[Calculation] = List.empty) extends State {
-  val solutionsGroupedByValues: Map[List[Int], List[Calculation]] = solutions.groupBy(_.values)
-  val solutionsNoDuplicates: List[Calculation] = solutionsGroupedByValues.values.toList.map(_.head)
+case class SolutionsState(currentResult: List[Calculation], allSolutions: List[Calculation] = List.empty) extends State {
+  val solutionsGroupedByValues: Map[List[Int], List[Calculation]] = allSolutions.groupBy(_.values)
 }
 
 case class NoSolutionsState(currentResult: List[Calculation], numbersLeftToSolve: List[Int]) extends State

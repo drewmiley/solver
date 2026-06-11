@@ -83,8 +83,9 @@ object Main {
     val targetNumber = getTargetNumber
     printValue("Target", targetNumber.toString)
 
-//    TODO: Testing no duplicates
-    val solutions: List[Calculation] = solveForSolutions(pickedNumbers, targetNumber, filterDuplicate).solutionsNoDuplicates
+    val groupedSolutions: Map[List[Int], List[Calculation]] = solveForSolutions(pickedNumbers, targetNumber, filterDuplicate).solutionsGroupedByValues
+    val solutions: List[Calculation] = groupedSolutions.values.toList.flatten
+    val filteredSolutions: List[Calculation] = groupedSolutions.values.toList.map(_.head)
     solutions
   }
 }

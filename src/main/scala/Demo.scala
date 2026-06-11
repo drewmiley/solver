@@ -8,7 +8,7 @@ object Demo {
       println("---------------")
       println(s"STEP $stepNumber DONE")
       println(s"stateStep$stepNumber has currentResult size ${stateAtStep.currentResult.length}")
-      println(s"stateStep$stepNumber has solutions size ${stateAtStep.solutions.length}")
+      println(s"stateStep$stepNumber has solutions size ${stateAtStep.allSolutions.length}")
       val valuesLengthAtStep: Set[Int] = stateAtStep.currentResult.map(_.values).map(_.size).toSet
       println(s"valuesLengthStep$stepNumber should be Set(${pickedNumbersLength - stepNumber})")
       println(s"valuesLengthStep$stepNumber is $valuesLengthAtStep")
@@ -46,7 +46,7 @@ object Demo {
     val stateStep5: SolutionsState = getNewState(stateStep4)
     printStateStepInfo(stateStep5, 5)
 
-    val solutions = stateStep5.solutions
+    val solutions = stateStep5.allSolutions
     println("---------------")
     println("SOLUTIONS FOUND")
   }

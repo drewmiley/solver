@@ -140,7 +140,7 @@ class CountdownSpec extends FlatSpec with BeforeAndAfterEach {
           var state: SolutionsState = initState
           (1 until size).foreach(stepNo => {
             val newState: SolutionsState = getNewState(state)
-            assert(newState.solutions.length >= state.solutions.length)
+            assert(newState.allSolutions.length >= state.allSolutions.length)
             state = newState
           })
         })
