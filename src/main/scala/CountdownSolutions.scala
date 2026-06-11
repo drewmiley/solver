@@ -10,7 +10,7 @@ object CountdownSolutions {
     val validNewSolutions = newSolutions.filter(newSolution => {
       !solutions.exists(solution => (solution.representation diff newSolution.representation).isEmpty)
     })
-    solutions ++ validNewSolutions
+    (solutions ++ validNewSolutions).sortBy(_.values.length).reverse
   }
 
   def initGetNewState(target: Int, filterDuplicate: Boolean)(state: SolutionsState): SolutionsState = {
