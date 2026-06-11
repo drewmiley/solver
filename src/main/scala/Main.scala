@@ -83,9 +83,7 @@ object Main {
     val targetNumber = getTargetNumber
     printValue("Target", targetNumber.toString)
 
-    val groupedSolutions: Map[List[Int], List[Calculation]] = solveForSolutions(pickedNumbers, targetNumber, filterDuplicate).solutionsGroupedByValues
-    val solutions: List[Calculation] = groupedSolutions.values.toList.flatten
-    val filteredSolutions: List[Calculation] = groupedSolutions.values.toList.map(_.head)
+    val solutions: List[Calculation] = solveForSolutions(pickedNumbers, targetNumber, filterDuplicate).solutions
     solutions
   }
 }
