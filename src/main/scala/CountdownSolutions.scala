@@ -10,17 +10,17 @@ object CountdownSolutions {
     val validNewSolutions = newSolutions.filter(newSolution => {
       !solutions.exists(solution => (solution.representation diff newSolution.representation).isEmpty)
     })
-    solutions ++ validNewSolutions
+    (solutions ++ validNewSolutions).sortBy(_.values.length).reverse
   }
 
   def initGetNewState(target: Int, filterDuplicate: Boolean)(state: SolutionsState): SolutionsState = {
     val calculatedValues: List[Calculation] = performOneOperationOnCurrentLists(state.currentResult)
-    val currentCalculationsWithFilteredDuplicate: List[Calculation] =
-      if (filterDuplicate) filterDuplicateCalculations(calculatedValues) else calculatedValues
-
     val calculationsSplitByIfTarget: Map[Boolean, List[Calculation]] =
-      currentCalculationsWithFilteredDuplicate.groupBy(_.values.contains(target))
-    val currentResult = calculationsSplitByIfTarget.getOrElse(false, List.empty)
+      calculatedValues.groupBy(_.values.contains(target))
+    val calculationsNotTarget = calculationsSplitByIfTarget.getOrElse(false, List.empty)
+
+    val currentResult: List[Calculation] =
+      if (filterDuplicate) filterDuplicateCalculations(calculationsNotTarget) else calculationsNotTarget
     val solutions = filterDuplicateSolutions(state.solutions, calculationsSplitByIfTarget.getOrElse(true, List.empty))
 
     SolutionsState(currentResult, solutions)
