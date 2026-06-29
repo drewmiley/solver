@@ -3,6 +3,8 @@ package main
 import main.CountdownNoSolutions.solveForNoSolutions
 import main.Util.{getPickedNumbers, printValue}
 
+import scala.util.Random
+
 object Experiment {
 
   private val largeNumbers: List[Int] = (1 to 4).map(d => 25 * d).toList
@@ -34,12 +36,13 @@ object Experiment {
     val numbersLeftToSolve: List[Int] = solveForNoSolutions(pickedNumbers, targetRange).numbersLeftToSolve
     printValue("No Solutions for", numbersLeftToSolve.mkString(", "))
 
-    //  TODO: Implement
-    val all0Large6SmallCombinations: List[List[Int]] = List.empty
-    val all1Large5SmallCombinations: List[List[Int]] = List.empty
-    val all2Large4SmallCombinations: List[List[Int]] = List.empty
-    val all3Large3SmallCombinations: List[List[Int]] = List.empty
-    val all4Large2SmallCombinations: List[List[Int]] = List.empty
+    val all0Large6SmallCombinations: List[List[Int]] = Random.shuffle(all6SmallPermuations.map(_.sorted))
+    val all1Large5SmallCombinations: List[List[Int]] = Random.shuffle(all1LargePermuations.flatMap(large => all5SmallPermuations.map(_ ++ large)).map(_.sorted))
+    val all2Large4SmallCombinations: List[List[Int]] = Random.shuffle(all2LargePermuations.flatMap(large => all4SmallPermuations.map(_ ++ large)).map(_.sorted))
+    val all3Large3SmallCombinations: List[List[Int]] = Random.shuffle(all3LargePermuations.flatMap(large => all3SmallPermuations.map(_ ++ large)).map(_.sorted))
+    val all4Large2SmallCombinations: List[List[Int]] = Random.shuffle(all4LargePermuations.flatMap(large => all2SmallPermuations.map(_ ++ large)).map(_.sorted))
+
+    println("EXPERIMENT DONE")
   }
 
 }
