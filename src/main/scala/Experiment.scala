@@ -22,12 +22,13 @@ object Experiment {
   private val all3SmallPermuations: List[List[Int]] = smallNumbers.combinations(3).toList
   private val all2SmallPermuations: List[List[Int]] = smallNumbers.combinations(2).toList
 
-//  TODO: Swap large and small and sorted not required
+//  TODO: Swap large and small and sorted not required - test this
   private val all0Large6SmallCombinations: List[List[Int]] = all6SmallPermuations.map(_.sorted)
   private val all1Large5SmallCombinations: List[List[Int]] = all1LargePermuations.flatMap(large => all5SmallPermuations.map(_ ++ large)).map(_.sorted)
   private val all2Large4SmallCombinations: List[List[Int]] = all2LargePermuations.flatMap(large => all4SmallPermuations.map(_ ++ large)).map(_.sorted)
   private val all3Large3SmallCombinations: List[List[Int]] = all3LargePermuations.flatMap(large => all3SmallPermuations.map(_ ++ large)).map(_.sorted)
   private val all4Large2SmallCombinations: List[List[Int]] = all4LargePermuations.flatMap(large => all2SmallPermuations.map(_ ++ large)).map(_.sorted)
+  private val allCombinations = all0Large6SmallCombinations ++ all1Large5SmallCombinations ++ all2Large4SmallCombinations ++ all3Large3SmallCombinations ++ all4Large2SmallCombinations
 
   private def generateNumberCombinations(
     total: Option[Int] = None,
@@ -38,12 +39,15 @@ object Experiment {
     fourLargeTwoSmall: Int = 0,
     shuffled: Boolean = true
   ): List[List[Int]] = {
-    //    TODO: Random selection of permutatiponsfunction (total: Some(), int = 0, int x 4, shuffled: bool = true)
-    total match {
-      case Some(t) =>
-        List.empty
-      case None =>
-        List.empty
+    (total, shuffled) match {
+      case (Some(t), true) =>
+        Random.shuffle(allCombinations) take t
+      case (None, _) =>
+        ((if (shuffled) Random.shuffle(all0Large6SmallCombinations) else all0Large6SmallCombinations) take zeroLargeSixSmall) ++
+          ((if (shuffled) Random.shuffle(all1Large5SmallCombinations) else all1Large5SmallCombinations) take oneLargeFiveSmall) ++
+          ((if (shuffled) Random.shuffle(all2Large4SmallCombinations) else all2Large4SmallCombinations) take twoLargeFourSmall) ++
+          ((if (shuffled) Random.shuffle(all3Large3SmallCombinations) else all3Large3SmallCombinations) take threeLargeThreeSmall) ++
+          ((if (shuffled) Random.shuffle(all4Large2SmallCombinations) else all4Large2SmallCombinations) take fourLargeTwoSmall)
     }
   }
 
