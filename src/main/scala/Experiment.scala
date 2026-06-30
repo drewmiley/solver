@@ -23,6 +23,12 @@ object Experiment {
   private val all2SmallPermuations: List[List[Int]] = smallNumbers.combinations(2).toList
 
 //  TODO: Swap large and small and sorted not required - test this
+//  private val all0Large6SmallCombinations: List[List[Int]] = all6SmallPermuations.map(_.sorted)
+//  private val all1Large5SmallCombinations: List[List[Int]] = all5SmallPermuations.flatMap(small => all1LargePermuations.map(small ++ _))
+//  private val all2Large4SmallCombinations: List[List[Int]] = all4SmallPermuations.flatMap(small => all2LargePermuations.map(small ++ _))
+//  private val all3Large3SmallCombinations: List[List[Int]] = all3SmallPermuations.flatMap(small => all3LargePermuations.map(small ++ _))
+//  private val all4Large2SmallCombinations: List[List[Int]] = all2SmallPermuations.flatMap(small => all4LargePermuations.map(small ++ _))
+
   private val all0Large6SmallCombinations: List[List[Int]] = all6SmallPermuations.map(_.sorted)
   private val all1Large5SmallCombinations: List[List[Int]] = all1LargePermuations.flatMap(large => all5SmallPermuations.map(_ ++ large)).map(_.sorted)
   private val all2Large4SmallCombinations: List[List[Int]] = all2LargePermuations.flatMap(large => all4SmallPermuations.map(_ ++ large)).map(_.sorted)
