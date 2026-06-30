@@ -23,14 +23,28 @@ object Experiment {
   private val all2SmallPermuations: List[List[Int]] = smallNumbers.combinations(2).toList
 
 //  TODO: Swap large and small and sorted not required
-  private val all0Large6SmallCombinations: List[List[Int]] = Random.shuffle(all6SmallPermuations.map(_.sorted))
-  private val all1Large5SmallCombinations: List[List[Int]] = Random.shuffle(all1LargePermuations.flatMap(large => all5SmallPermuations.map(_ ++ large)).map(_.sorted))
-  private val all2Large4SmallCombinations: List[List[Int]] = Random.shuffle(all2LargePermuations.flatMap(large => all4SmallPermuations.map(_ ++ large)).map(_.sorted))
-  private val all3Large3SmallCombinations: List[List[Int]] = Random.shuffle(all3LargePermuations.flatMap(large => all3SmallPermuations.map(_ ++ large)).map(_.sorted))
-  private val all4Large2SmallCombinations: List[List[Int]] = Random.shuffle(all4LargePermuations.flatMap(large => all2SmallPermuations.map(_ ++ large)).map(_.sorted))
+  private val all0Large6SmallCombinations: List[List[Int]] = all6SmallPermuations.map(_.sorted)
+  private val all1Large5SmallCombinations: List[List[Int]] = all1LargePermuations.flatMap(large => all5SmallPermuations.map(_ ++ large)).map(_.sorted)
+  private val all2Large4SmallCombinations: List[List[Int]] = all2LargePermuations.flatMap(large => all4SmallPermuations.map(_ ++ large)).map(_.sorted)
+  private val all3Large3SmallCombinations: List[List[Int]] = all3LargePermuations.flatMap(large => all3SmallPermuations.map(_ ++ large)).map(_.sorted)
+  private val all4Large2SmallCombinations: List[List[Int]] = all4LargePermuations.flatMap(large => all2SmallPermuations.map(_ ++ large)).map(_.sorted)
 
-  private def generateNumberCombinations(): List[List[Int]] = {
-    List.empty
+  private def generateNumberCombinations(
+    total: Option[Int] = None,
+    zeroLargeSixSmall: Int = 0,
+    oneLargeFiveSmall: Int = 0,
+    twoLargeFourSmall: Int = 0,
+    threeLargeThreeSmall: Int = 0,
+    fourLargeTwoSmall: Int = 0,
+    shuffled: Boolean = true
+  ): List[List[Int]] = {
+    //    TODO: Random selection of permutatiponsfunction (total: Some(), int = 0, int x 4, shuffled: bool = true)
+    total match {
+      case Some(t) =>
+        List.empty
+      case None =>
+        List.empty
+    }
   }
 
   def runExperiment(): Unit = {
@@ -47,9 +61,9 @@ object Experiment {
     val numbersLeftToSolve: List[Int] = solveForNoSolutions(pickedNumbers, targetRange).numbersLeftToSolve
     printValue("No Solutions for", numbersLeftToSolve.mkString(", "))
 
-//    TODO: Random selection of permutatiponsfunction (total: Some(), int = 0, int x 4, shuffled: bool = true)
-    val numbersCombinationsForExperiment = getNumberCombinations()
+    val numbersCombinationsForExperiment = generateNumberCombinations()
 
+    println(numbersCombinationsForExperiment)
     println("EXPERIMENT DONE")
   }
 
