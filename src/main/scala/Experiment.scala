@@ -29,14 +29,13 @@ object Experiment {
   private val all4Large2SmallCombinations: List[List[Int]] = all4LargePermuations.flatMap(large => all2SmallPermuations.map(_ ++ large)).map(_.sorted)
   private val allCombinations = all0Large6SmallCombinations ++ all1Large5SmallCombinations ++ all2Large4SmallCombinations ++ all3Large3SmallCombinations ++ all4Large2SmallCombinations
 
-  private def generateNumberCombinations(
+  private def generateNumberCombinations(shuffled: Boolean)(
     total: Option[Int] = None,
     zeroLargeSixSmall: Int = 0,
     oneLargeFiveSmall: Int = 0,
     twoLargeFourSmall: Int = 0,
     threeLargeThreeSmall: Int = 0,
-    fourLargeTwoSmall: Int = 0,
-    shuffled: Boolean = true
+    fourLargeTwoSmall: Int = 0
   ): List[List[Int]] = {
     (total, shuffled) match {
       case (Some(t), true) =>
@@ -51,13 +50,13 @@ object Experiment {
     }
   }
 
-  private def filterNumberCombinationsContaining(
+  private def filterNumberCombinationsContaining(shuffled: Boolean)(
     containing: List[Int],
     zeroLargeSixSmall: Boolean = true,
     oneLargeFiveSmall: Boolean = true,
     twoLargeFourSmall: Boolean = true,
     threeLargeThreeSmall: Boolean = true,
-    fourLargeTwoSmall: Boolean = true,
+    fourLargeTwoSmall: Boolean = true
   ): List[List[Int]] = {
     List.empty
   }
@@ -76,8 +75,8 @@ object Experiment {
     val numbersLeftToSolve: List[Int] = solveForNoSolutions(pickedNumbers, targetRange).numbersLeftToSolve
     printValue("No Solutions for", numbersLeftToSolve.mkString(", "))
 
-    val numbersCombinationsForExperiment = generateNumberCombinations(total = Some(20))
-    val numbersCombinationsContainingList = filterNumberCombinationsContaining(List(1, 2, 100))
+    val numbersCombinationsForExperiment = generateNumberCombinations(shuffled = true)(total = Some(20))
+    val numbersCombinationsContainingList = filterNumberCombinationsContaining(shuffled = false)(List(1, 2, 100))
 
     println(numbersCombinationsForExperiment.length)
     println(numbersCombinationsContainingList.length)
