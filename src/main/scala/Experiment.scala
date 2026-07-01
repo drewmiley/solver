@@ -41,6 +41,7 @@ object Experiment {
     (total, shuffled) match {
       case (Some(t), true) =>
         Random.shuffle(allCombinations) take t
+      case (Some(t), false) => List.empty
       case (None, _) =>
         ((if (shuffled) Random.shuffle(all0Large6SmallCombinations) else all0Large6SmallCombinations) take zeroLargeSixSmall) ++
           ((if (shuffled) Random.shuffle(all1Large5SmallCombinations) else all1Large5SmallCombinations) take oneLargeFiveSmall) ++
@@ -48,6 +49,17 @@ object Experiment {
           ((if (shuffled) Random.shuffle(all3Large3SmallCombinations) else all3Large3SmallCombinations) take threeLargeThreeSmall) ++
           ((if (shuffled) Random.shuffle(all4Large2SmallCombinations) else all4Large2SmallCombinations) take fourLargeTwoSmall)
     }
+  }
+
+  private def filterNumberCombinationsContaining(
+    containing: List[Int],
+    zeroLargeSixSmall: Boolean = true,
+    oneLargeFiveSmall: Boolean = true,
+    twoLargeFourSmall: Boolean = true,
+    threeLargeThreeSmall: Boolean = true,
+    fourLargeTwoSmall: Boolean = true,
+  ): List[List[Int]] = {
+    List.empty
   }
 
   def runExperiment(): Unit = {
@@ -64,9 +76,11 @@ object Experiment {
     val numbersLeftToSolve: List[Int] = solveForNoSolutions(pickedNumbers, targetRange).numbersLeftToSolve
     printValue("No Solutions for", numbersLeftToSolve.mkString(", "))
 
-    val numbersCombinationsForExperiment = generateNumberCombinations()
+    val numbersCombinationsForExperiment = generateNumberCombinations(total = Some(20))
+    val numbersCombinationsContainingList = filterNumberCombinationsContaining(List(1, 2, 100))
 
-    println(numbersCombinationsForExperiment)
+    println(numbersCombinationsForExperiment.length)
+    println(numbersCombinationsContainingList.length)
     println("EXPERIMENT DONE")
   }
 
