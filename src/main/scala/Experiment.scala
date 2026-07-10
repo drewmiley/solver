@@ -42,6 +42,7 @@ object Experiment {
         Random.shuffle(allCombinations) take t
       case (Some(t), false) => List.empty
       case (None, _) =>
+//        TODO: Full shuffle
         ((if (shuffled) Random.shuffle(all0Large6SmallCombinations) else all0Large6SmallCombinations) take zeroLargeSixSmall) ++
           ((if (shuffled) Random.shuffle(all1Large5SmallCombinations) else all1Large5SmallCombinations) take oneLargeFiveSmall) ++
           ((if (shuffled) Random.shuffle(all2Large4SmallCombinations) else all2Large4SmallCombinations) take twoLargeFourSmall) ++
@@ -58,8 +59,13 @@ object Experiment {
     threeLargeThreeSmall: Boolean = true,
     fourLargeTwoSmall: Boolean = true
   ): List[List[Int]] = {
-//    TODO: Implement
-    List.empty
+    val optionList = (if (zeroLargeSixSmall) Some(all0Large6SmallCombinations.filter(combo => (containing diff combo) == List.empty)) else None) ++
+      (if (oneLargeFiveSmall) Some(all1Large5SmallCombinations.filter(combo => (containing diff combo) == List.empty)) else None) ++
+      (if (twoLargeFourSmall) Some(all2Large4SmallCombinations.filter(combo => (containing diff combo) == List.empty)) else None) ++
+      (if (threeLargeThreeSmall) Some(all3Large3SmallCombinations.filter(combo => (containing diff combo) == List.empty)) else None) ++
+      (if (fourLargeTwoSmall) Some(all4Large2SmallCombinations.filter(combo => (containing diff combo) == List.empty)) else None)
+    val returnCombos = optionList.toList.flatten
+    if (shuffled) Random.shuffle(returnCombos) else returnCombos
   }
 
   def runExperiment(): Unit = {
