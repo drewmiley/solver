@@ -29,5 +29,22 @@ object Util {
     }
   }
 
+  def getPickedNumbers(picked: Option[List[Int]] = None,
+                               smallRandom: Option[Int] = None,
+                               largeRandom: Option[Int] = None): List[Int] = {
+    picked match {
+      case Some(intList) => intList.sorted
+      case None =>
+        val largeNumbers = largeRandom.getOrElse(1)
+        val smallNumbers = smallRandom.getOrElse(6 - largeNumbers)
+
+        val largePicker = new NumberPicker((1 to 4).map(d => 25 * d).toList)
+        val smallPicker = new NumberPicker((1 to 10).toList ++ (1 to 10).toList)
+
+        val pickedNumbers = smallPicker.select(smallNumbers).sorted ++ largePicker.select(largeNumbers)
+        pickedNumbers
+    }
+  }
+
   def printValue(name: String, output: String): Unit = println(s"$name | $output")
 }

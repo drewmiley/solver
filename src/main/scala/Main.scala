@@ -3,6 +3,7 @@ package main
 import CountdownSolutions.solveForSolutions
 import CountdownNoSolutions.solveForNoSolutions
 import Demo.runDemo
+import Experiment.runExperiment
 import Util._
 
 object Main {
@@ -10,18 +11,26 @@ object Main {
   def main(args: Array[String]): Unit = {
     val argsList = args.toList
 
+    (sys.env.get("DEMO").contains("true"), sys.env.get("EXPERIMENT").contains("true")) match {
+      case (true, _) => runDemo()
+      case (_, true) => runExperiment()
+      case (false, false) => run(argsList)
+    }
+  }
+
+  private def run(argsList: List[String]): Unit = {
     val picked: Option[List[Int]] = getConfigIntListFromArgs(argsList, "picked")
     val smallRandom: Option[Int] = getConfigIntFromArgs(argsList, "smallRandom")
     val largeRandom: Option[Int] = getConfigIntFromArgs(argsList, "largeRandom")
-    (sys.env.get("DEMO").contains("true"), getConfigBoolFromArgs(argsList, "noSolutions")) match {
-      case (true, _) => runDemo()
-      case (false, Some(true)) =>
+
+    getConfigBoolFromArgs(argsList, "noSolutions") match {
+      case Some(true) =>
         val pickedNumbers = getPickedNumbers(picked, smallRandom, largeRandom)
         val targetMin: Option[Int] = getConfigIntFromArgs(argsList, "targetMin")
         val targetMax: Option[Int] = getConfigIntFromArgs(argsList, "targetMax")
         val noSolutionsFor: List[Int] = findNoSolutions(pickedNumbers, targetMin, targetMax)
         printValue("No Solutions for", noSolutionsFor.mkString(", "))
-      case (false, _) =>
+      case _ =>
         val target : Option[Int] = getConfigIntFromArgs(argsList, "target")
         val filterDuplicate: Boolean = getConfigBoolFromArgs(argsList, "filterDuplicate").getOrElse(true)
         val displaySolutions: Boolean = getConfigBoolFromArgs(argsList, "displaySolutions").getOrElse(true)
@@ -30,23 +39,6 @@ object Main {
         val solutionsDisplayText = if (filterDuplicate) "No. Solutions (Distinct)" else "No. Solutions (inc. duplicate)"
         printValue(solutionsDisplayText, solutions.length.toString)
         if (displaySolutions) solutions.map(_.representation.mkString(", ")).foreach(printValue("Solved", _))
-    }
-  }
-
-  private def getPickedNumbers(picked: Option[List[Int]] = None,
-                               smallRandom: Option[Int] = None,
-                               largeRandom: Option[Int] = None): List[Int] = {
-    picked match {
-      case Some(intList) => intList.sorted
-      case None =>
-        val largeNumbers = largeRandom.getOrElse(1)
-        val smallNumbers = smallRandom.getOrElse(6 - largeNumbers)
-
-        val largePicker = new NumberPicker((1 to 4).map(d => 25 * d).toList)
-        val smallPicker = new NumberPicker((1 to 10).toList ++ (1 to 10).toList)
-
-        val pickedNumbers = smallPicker.select(smallNumbers).sorted ++ largePicker.select(largeNumbers)
-        pickedNumbers
     }
   }
 
